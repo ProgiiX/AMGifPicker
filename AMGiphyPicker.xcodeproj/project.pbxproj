@@ -107,7 +107,7 @@
 		12A37E7620056AC30052308E = {
 			isa = PBXGroup;
 			children = (
-				12A37E8120056AC40052308E /* GiphyComponent */,
+				12A37E8120056AC40052308E /* AMGiphyPicker */,
 				12A37E8020056AC30052308E /* Products */,
 				6D88DDAF840DF44957689A6D /* Pods */,
 				980BE53E805E3730DF6E9C23 /* Frameworks */,
@@ -122,13 +122,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		12A37E8120056AC40052308E /* GiphyComponent */ = {
+		12A37E8120056AC40052308E /* AMGiphyPicker */ = {
 			isa = PBXGroup;
 			children = (
 				1221AB9E20114EAA00B72AC9 /* Example */,
 				1221AB9D20114E9800B72AC9 /* Source */,
 			);
-			path = GiphyComponent;
+			path = AMGiphyPicker;
 			sourceTree = "<group>";
 		};
 		12A37E9820056AEE0052308E /* VIew */ = {
