@@ -13,7 +13,8 @@ class AMGiphyPickerView: UIView {
     
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
     
-    var giphy: [AMGiphyViewModel] = []
+    public private(set) var giphy: [AMGiphyViewModel] = []
+    private var isLoading = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,8 +33,22 @@ class AMGiphyPickerView: UIView {
     
     private func initialize() {
         setupCollectionView()
-        AMGiphyDataProvider.shared.getGiphy(nil) {[weak self] (giphys) in
-            self?.giphy = AMGiphyPickerView.convertModels(giphys)
+        isLoading = true
+        AMGiphyDataProvider.shared.loadGiphy {[weak self] (items) in
+            self?.isLoading = false
+            self?.giphy = AMGiphyPickerView.convertModels(items)
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+    
+    private func loadNext() {
+        if isLoading { return }
+        isLoading = true
+        AMGiphyDataProvider.shared.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
+            self?.isLoading = false
+            self?.giphy.append(contentsOf: AMGiphyPickerView.convertModels(items))
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -100,7 +115,14 @@ extension AMGiphyPickerView: AMGiphyGridLayoutDelegate {
     }
 }
 
-
+extension AMGiphyPickerView: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x > scrollView.contentSize.width - scrollView.bounds.width - 50 {
+            loadNext()
+        }
+    }
+}
 
 
 
