@@ -13,7 +13,7 @@ class AMGiphyPickerView: UIView {
     
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
     
-    var giphy: [AMGiphyItem] = []
+    var giphy: [AMGiphyViewModel] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,13 +27,13 @@ class AMGiphyPickerView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.frame = self.frame
+        collectionView.frame = bounds
     }
     
     private func initialize() {
         setupCollectionView()
         AMGiphyDataProvider.shared.getGiphy(nil) {[weak self] (giphys) in
-            self?.giphy = giphys
+            self?.giphy = AMGiphyPickerView.convertModels(giphys)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -49,6 +49,13 @@ class AMGiphyPickerView: UIView {
         collectionView.dataSource = self
         collectionView.register(AMGiphyCell.self, forCellWithReuseIdentifier: String(describing: AMGiphyCell.self))
         collectionView.reloadData()
+    }
+    
+    private static func convertModels(_ items: [AMGiphyItem]) -> [AMGiphyViewModel] {
+        let result = items.map { (item) -> AMGiphyViewModel in
+            return AMGiphyViewModel(item)
+        }
+        return result
     }
 }
 
@@ -80,7 +87,7 @@ extension AMGiphyPickerView: AMGiphyGridLayoutDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat {
-        let itemSize = giphy[indexPath.item].size
+        let itemSize = giphy[indexPath.item].gifItem.size
         
         if itemSize.height > height {
             let ratio = itemSize.height/height
