@@ -46,15 +46,22 @@ class AMGiphyDataProvider: NSObject {
         }
         
         // Search
-        if let _ = search {
-            
+        if let search = search {
+            getSearchGifs(search, offset: offset, completion: {[weak self] (items) in
+                guard let strongSelf = self else { return }
+                strongSelf.searchGifs = strongSelf.searchGifs.union(items)
+                completion(items)
+            })
         } else {
             // Trending
             // Clear Search Cache
             searchString = nil
             searchGifs.removeAll()
-            
-            
+            getTrendingGifs(offset: offset, completion: {[weak self] (items) in
+                guard let strongSelf = self else { return }
+                strongSelf.trendingGifs = strongSelf.trendingGifs.union(items)
+                completion(items)
+            })
         }
     }
     
