@@ -22,3 +22,17 @@ class AMGiphyItem {
         self.size = size
     }
 }
+
+extension AMGiphyItem: Hashable {
+    
+    var hashValue: Int {
+        return id.hashValue
+    }
+}
+
+extension AMGiphyItem: Equatable {
+    
+    static func ==(lhs: AMGiphyItem, rhs: AMGiphyItem) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
