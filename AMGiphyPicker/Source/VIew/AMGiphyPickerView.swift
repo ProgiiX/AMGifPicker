@@ -11,6 +11,11 @@ import GiphyCoreSDK
 
 class AMGiphyPickerView: UIView {
     
+    //MARK: - Public Settings
+    var numberRows = 2
+    var limit = 20*2
+    var maximumScrollCount = 100*2
+    
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
     
     public private(set) var giphy: [AMGiphyViewModel] = []
@@ -47,10 +52,10 @@ class AMGiphyPickerView: UIView {
         if isLoading { return }
         isLoading = true
         AMGiphyDataProvider.shared.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
-            self?.isLoading = false
             self?.giphy.append(contentsOf: AMGiphyPickerView.convertModels(items))
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+                self?.isLoading = false
             }
         }
     }
@@ -62,6 +67,7 @@ class AMGiphyPickerView: UIView {
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
         collectionView.register(AMGiphyCell.self, forCellWithReuseIdentifier: String(describing: AMGiphyCell.self))
         collectionView.reloadData()
     }
@@ -91,6 +97,26 @@ extension AMGiphyPickerView: UICollectionViewDataSource {
     }
 }
 
+extension AMGiphyPickerView: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            giphy[indexPath.row].prefetchData()
+            
+            if giphy.count - indexPath.row < limit/2 {
+                loadNext()
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            giphy[indexPath.row].cancelPrefecth()
+        }
+    }
+    
+}
+
 extension AMGiphyPickerView: UICollectionViewDelegate {
     
 }
@@ -112,15 +138,6 @@ extension AMGiphyPickerView: AMGiphyGridLayoutDelegate {
             return itemSize.width*ratio
         }
         return height
-    }
-}
-
-extension AMGiphyPickerView: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.x > scrollView.contentSize.width - scrollView.bounds.width - 50 {
-            loadNext()
-        }
     }
 }
 
