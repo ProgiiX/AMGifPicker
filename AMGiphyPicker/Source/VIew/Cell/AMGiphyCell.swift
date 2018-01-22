@@ -14,7 +14,7 @@ import AVKit
 class AMGiphyCell: UICollectionViewCell {
     
     private var model: AMGiphyViewModel!
-    let imageView = FLAnimatedImageView()
+    let imageView = UIImageView()
     let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
     var player: AVPlayer?
@@ -60,7 +60,7 @@ class AMGiphyCell: UICollectionViewCell {
     func setupWith(_ media: AMGiphyViewModel) {
         model = media
         model.delegate = self
-        model.startLoading()
+        model.fetchData()
         startIndicator()
     }
     
@@ -81,11 +81,12 @@ class AMGiphyCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         model.delegate = nil
-        model.stopLoading()
+        model.stopFetching()
         model = nil
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        imageView.image = nil
         
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         player = nil
         playerLayer.player = nil
     }
@@ -109,6 +110,7 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
     func giphyModel(_ item: AMGiphyViewModel?, loadedGif path: String?) {
         if let path = path {
             DispatchQueue.main.async {
+                self.stopIndicator()
                 let url = URL(fileURLWithPath: path)
                 self.player = AVPlayer(url: url)
                 self.playerLayer.player = self.player
@@ -116,7 +118,7 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
                 self.player?.play()
                 self.setNeedsDisplay()
                 self.imageView.isHidden = true
-                self.imageView.animatedImage = nil
+                self.imageView.image = nil
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(self.videoLoop), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player!.currentItem)
             }
@@ -126,7 +128,15 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
     func giphyModel(_ item: AMGiphyViewModel?, loadedThumbnail data: Data?) {
         DispatchQueue.main.async {
             self.stopIndicator()
-            self.imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+            if let imageData = data {
+                UIView.transition(with: self.imageView,
+                                  duration: 0.2,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    self.imageView.image = UIImage(data: imageData)
+                                  },
+                                  completion: nil)
+            }
         }
     }
 }
