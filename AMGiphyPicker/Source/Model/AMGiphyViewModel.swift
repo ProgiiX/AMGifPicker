@@ -95,16 +95,3 @@ class AMGiphyViewModel {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
