@@ -9,14 +9,12 @@
 import UIKit
 import GiphyCoreSDK
 
-class AMGiphyPickerView: UIView {
+class AMGiphyPicker: UIView {
     
-    //MARK: - Public Settings
-    var numberRows = 2
-    var limit = 20*2
-    var maximumScrollCount = 100*2
-    
+    private var settings: AMGiphyPickerSettings = AMGiphyPickerSettings.defaultSettings
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
+    
+    private let dataProvider = AMGiphyDataProvider()
     
     public private(set) var giphy: [AMGiphyViewModel] = []
     private var isLoading = false
@@ -31,6 +29,11 @@ class AMGiphyPickerView: UIView {
         initialize()
     }
     
+    convenience init(settings: AMGiphyPickerSettings) {
+        self.init(frame: .zero)
+        self.settings = settings
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         collectionView.frame = bounds
@@ -39,9 +42,9 @@ class AMGiphyPickerView: UIView {
     private func initialize() {
         setupCollectionView()
         isLoading = true
-        AMGiphyDataProvider.shared.loadGiphy {[weak self] (items) in
+        dataProvider.loadGiphy {[weak self] (items) in
             self?.isLoading = false
-            self?.giphy = AMGiphyPickerView.convertModels(items)
+            self?.giphy = AMGiphyPicker.convertModels(items)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -51,8 +54,8 @@ class AMGiphyPickerView: UIView {
     private func loadNext() {
         if isLoading { return }
         isLoading = true
-        AMGiphyDataProvider.shared.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
-            self?.giphy.append(contentsOf: AMGiphyPickerView.convertModels(items))
+        dataProvider.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
+            self?.giphy.append(contentsOf: AMGiphyPicker.convertModels(items))
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
                 self?.isLoading = false
@@ -80,7 +83,7 @@ class AMGiphyPickerView: UIView {
     }
 }
 
-extension AMGiphyPickerView: UICollectionViewDataSource {
+extension AMGiphyPicker: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -97,15 +100,11 @@ extension AMGiphyPickerView: UICollectionViewDataSource {
     }
 }
 
-extension AMGiphyPickerView: UICollectionViewDataSourcePrefetching {
+extension AMGiphyPicker: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             giphy[indexPath.row].prefetchData()
-            
-            if giphy.count - indexPath.row < limit/2 {
-                loadNext()
-            }
         }
     }
     
@@ -114,17 +113,16 @@ extension AMGiphyPickerView: UICollectionViewDataSourcePrefetching {
             giphy[indexPath.row].cancelPrefecth()
         }
     }
+}
+
+extension AMGiphyPicker: UICollectionViewDelegate {
     
 }
 
-extension AMGiphyPickerView: UICollectionViewDelegate {
-    
-}
-
-extension AMGiphyPickerView: AMGiphyGridLayoutDelegate {
+extension AMGiphyPicker: AMGiphyGridLayoutDelegate {
     
     func numberOfRows(_ collectionView: UICollectionView) -> Int {
-        return 2
+        return settings.numberRows
     }
     
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat {
