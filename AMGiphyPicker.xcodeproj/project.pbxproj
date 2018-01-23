@@ -15,11 +15,12 @@
 		12A37E8A20056AC40052308E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12A37E8920056AC40052308E /* Assets.xcassets */; };
 		12A37E8D20056AC40052308E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12A37E8B20056AC40052308E /* LaunchScreen.storyboard */; };
 		12A37E9A20056AEE0052308E /* AMGiphyDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9720056AEE0052308E /* AMGiphyDataProvider.swift */; };
-		12A37E9B20056AEE0052308E /* AMGiphyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9920056AEE0052308E /* AMGiphyPickerView.swift */; };
+		12A37E9B20056AEE0052308E /* AMGiphyPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9920056AEE0052308E /* AMGiphyPicker.swift */; };
 		12A37E9D20056F5A0052308E /* AMGiphyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9C20056F5A0052308E /* AMGiphyCell.swift */; };
 		12E780642006CF8F0068C8F7 /* AMGiphyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E780632006CF8F0068C8F7 /* AMGiphyItem.swift */; };
 		12E7806620080D360068C8F7 /* AMGiphyGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E7806520080D360068C8F7 /* AMGiphyGridLayout.swift */; };
 		9C49D8D1EDF8C0EB9E233ACF /* Pods_AMGiphyPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4349B166CBAA2E233C116F99 /* Pods_AMGiphyPicker.framework */; };
+		FA478C3420177EE300D2FAD3 /* AMGiphyPickerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGiphyPickerSettings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +35,7 @@
 		12A37E8C20056AC40052308E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12A37E8E20056AC40052308E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12A37E9720056AEE0052308E /* AMGiphyDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGiphyDataProvider.swift; sourceTree = "<group>"; };
-		12A37E9920056AEE0052308E /* AMGiphyPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGiphyPickerView.swift; sourceTree = "<group>"; };
+		12A37E9920056AEE0052308E /* AMGiphyPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGiphyPicker.swift; sourceTree = "<group>"; };
 		12A37E9C20056F5A0052308E /* AMGiphyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGiphyCell.swift; sourceTree = "<group>"; };
 		12E780632006CF8F0068C8F7 /* AMGiphyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGiphyItem.swift; sourceTree = "<group>"; };
 		12E7806520080D360068C8F7 /* AMGiphyGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGiphyGridLayout.swift; sourceTree = "<group>"; };
@@ -43,6 +44,7 @@
 		50FCC14DB220017964E5D6A3 /* Pods-GiphyComponent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiphyComponent.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GiphyComponent/Pods-GiphyComponent.debug.xcconfig"; sourceTree = "<group>"; };
 		51C78273592EF3A7B8071486 /* Pods-AMGiphyPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AMGiphyPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AMGiphyPicker/Pods-AMGiphyPicker.debug.xcconfig"; sourceTree = "<group>"; };
 		647590E82FF6C68ABFD8F6E2 /* Pods_GiphyComponent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GiphyComponent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA478C3320177EE300D2FAD3 /* AMGiphyPickerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGiphyPickerSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,7 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				12D5A3BC2014BA0800FFCB6F /* Cell */,
-				12A37E9920056AEE0052308E /* AMGiphyPickerView.swift */,
+				12A37E9920056AEE0052308E /* AMGiphyPicker.swift */,
+				FA478C3320177EE300D2FAD3 /* AMGiphyPickerSettings.swift */,
 			);
 			path = VIew;
 			sourceTree = "<group>";
@@ -314,8 +317,9 @@
 				12A37E9A20056AEE0052308E /* AMGiphyDataProvider.swift in Sources */,
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
 				12992CCB200D43BB0054B9E5 /* AMGiphyCacheProvider.swift in Sources */,
-				12A37E9B20056AEE0052308E /* AMGiphyPickerView.swift in Sources */,
+				12A37E9B20056AEE0052308E /* AMGiphyPicker.swift in Sources */,
 				12A37E8320056AC40052308E /* AppDelegate.swift in Sources */,
+				FA478C3420177EE300D2FAD3 /* AMGiphyPickerSettings.swift in Sources */,
 				1221ABA120114FCD00B72AC9 /* AMGiphyViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,10 +459,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24F7LAMPJN;
+				DEVELOPMENT_TEAM = PX9AWM33HW;
 				INFOPLIST_FILE = "$(SRCROOT)/AMGiphyPicker/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = amgiphypicker.app.example;
+				PRODUCT_BUNDLE_IDENTIFIER = amgiphypicker1.app.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -471,10 +475,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24F7LAMPJN;
+				DEVELOPMENT_TEAM = PX9AWM33HW;
 				INFOPLIST_FILE = "$(SRCROOT)/AMGiphyPicker/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = amgiphypicker.app.example;
+				PRODUCT_BUNDLE_IDENTIFIER = amgiphypicker1.app.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var gifView: AMGiphyPickerView!
+    @IBOutlet weak var gifView: AMGiphyPicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()

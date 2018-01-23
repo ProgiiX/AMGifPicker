@@ -53,7 +53,7 @@ class AMGiphyViewModel {
         } else {
             fetchThumbnail({[weak self] in
                 self?.fetchGifData()
-           })
+            })
         }
     }
     
@@ -65,34 +65,42 @@ class AMGiphyViewModel {
     
     //MARK: - Private Methods
     private func fetchThumbnail(_ completion: (()->Void)? = nil) {
-        previewRequest = Alamofire.download(gifItem.thumbnailUrl ?? "", to: destionation(gifItem.id + "_thumbnail"))
-        previewRequest?.responseData(completionHandler: {[weak self] (responce) in
-            if let data = responce.value, let key = self?.gifItem.id {
-                AMGiphyCacheProvider.shared.cacheThumbnail(data, with: key)
-            }
-            self?.delegate?.giphyModel(self, loadedThumbnail: responce.value)
-            self?.removeTemporaryCache(responce.destinationURL)
-            
-            if let callback = completion {
-                callback()
-            }
-        })
+        if previewRequest != nil {
+            previewRequest?.resume()
+        } else {
+            previewRequest = Alamofire.download(gifItem.thumbnailUrl ?? "", to: destionation(gifItem.id + "_thumbnail"))
+            previewRequest?.responseData(completionHandler: {[weak self] (responce) in
+                if let data = responce.value, let key = self?.gifItem.id {
+                    AMGiphyCacheProvider.shared.cacheThumbnail(data, with: key)
+                }
+                self?.delegate?.giphyModel(self, loadedThumbnail: responce.value)
+                self?.removeTemporaryCache(responce.destinationURL)
+                
+                if let callback = completion {
+                    callback()
+                }
+            })
+        }
     }
     
     private func fetchGifData() {
-        gifRequest = Alamofire.download(gifItem.gifUrl ?? "", to: destionation(gifItem.id))
-        gifRequest?.responseData(completionHandler: {[weak self] (responce) in
-            if let data = responce.value, let key = self?.gifItem.id {
-                AMGiphyCacheProvider.shared.cacheGif(data, with: key, completion: { (success) in
-                    if success {
-                        self?.delegate?.giphyModel(self, loadedGif: AMGiphyCacheProvider.shared.gifCachePath(for: key))
-                    }
-                })
-            } else {
-                self?.delegate?.giphyModel(self, loadedGif: nil)
-            }
-            self?.removeTemporaryCache(responce.destinationURL)
-        })
+        if gifRequest != nil {
+            gifRequest?.resume()
+        } else {
+            gifRequest = Alamofire.download(gifItem.gifUrl ?? "", to: destionation(gifItem.id))
+            gifRequest?.responseData(completionHandler: {[weak self] (responce) in
+                if let data = responce.value, let key = self?.gifItem.id {
+                    AMGiphyCacheProvider.shared.cacheGif(data, with: key, completion: { (success) in
+                        if success {
+                            self?.delegate?.giphyModel(self, loadedGif: AMGiphyCacheProvider.shared.gifCachePath(for: key))
+                        }
+                    })
+                } else {
+                    self?.delegate?.giphyModel(self, loadedGif: nil)
+                }
+                self?.removeTemporaryCache(responce.destinationURL)
+            })
+        }
     }
     
     private func removeTemporaryCache(_ url: URL?) {

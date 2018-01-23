@@ -64,6 +64,18 @@ class AMGiphyCell: UICollectionViewCell {
         startIndicator()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        playerLayer.frame = bounds
+    }
+    
+    @objc private func videoLoop() {
+        player?.pause()
+        player?.currentItem?.seek(to: kCMTimeZero, completionHandler: nil)
+        player?.play()
+    }
+ 
+    //MARK: - Loading Indicator
     private func startIndicator() {
         DispatchQueue.main.async {
             self.indicator.startAnimating()
@@ -77,32 +89,20 @@ class AMGiphyCell: UICollectionViewCell {
             self.indicator.stopAnimating()
         }
     }
-    
+     
     override func prepareForReuse() {
         super.prepareForReuse()
         model.delegate = nil
         model.stopFetching()
         model = nil
-
+        
         imageView.image = nil
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         player = nil
         playerLayer.player = nil
+        playerLayer.opacity = 0.0
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        playerLayer.frame = bounds
-    }
-    
-    
-    @objc private func videoLoop() {
-        player?.pause()
-        player?.currentItem?.seek(to: kCMTimeZero, completionHandler: nil)
-        player?.play()
-    }
-    
 }
 
 extension AMGiphyCell: AMGiphyViewModelDelegate {
@@ -116,11 +116,14 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
                 self.playerLayer.player = self.player
                 
                 self.player?.play()
-                self.setNeedsDisplay()
+                NotificationCenter.default.addObserver(self, selector: #selector(self.videoLoop), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player!.currentItem)
+                
                 self.imageView.isHidden = true
                 self.imageView.image = nil
                 
-                NotificationCenter.default.addObserver(self, selector: #selector(self.videoLoop), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player!.currentItem)
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.playerLayer.opacity = 1.0
+                })
             }
         }
     }

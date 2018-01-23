@@ -9,30 +9,21 @@
 import Foundation
 import GiphyCoreSDK
 
-class AMGiphyDataProvider: NSObject {
+class AMGiphyDataProvider {
     
     private struct Constants {
         static let limit = 20
         static let maxLoadCount = 100
     }
     
-    private static var _shared: AMGiphyDataProvider?
-    
-    @objc static var shared: AMGiphyDataProvider {
-        if _shared == nil {
-            _shared = AMGiphyDataProvider()
-        }
-        return _shared!
-    }
-    
-    let client: GPHClient!
+    private let client: GPHClient
     
     private var trendingGifs: Set<AMGiphyItem> = []
     private var searchGifs: Set<AMGiphyItem> = []
     
     private var searchString: String? = nil
     
-    private override init() {
+    init() {
         client = GPHClient(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
     }
     

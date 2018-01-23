@@ -55,14 +55,16 @@ class AMGiphyCacheProvider {
     }
     
     func thumbnailCache(for key: String, completion: @escaping (Data?) -> Void) {
-        thumbnailsStorage.async.object(ofType: Data.self, forKey: key + "_thumbnail") { (result) in
-            switch result {
-            case .value(let data):
-                completion(data)
-            case .error(_):
-                completion(nil)
-            }
-        }
+        let data = try? thumbnailsStorage.object(ofType: Data.self, forKey: key + "_thumbnail")
+        completion(data)
+//        thumbnailsStorage.async.object(ofType: Data.self, forKey: key + "_thumbnail") { (result) in
+//            switch result {
+//            case .value(let data):
+//                completion(data)
+//            case .error(_):
+//                completion(nil)
+//            }
+//        }
     }
     
     func gifCache(for key: String, completion: @escaping (Data?) -> Void) {
