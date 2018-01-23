@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import AVKit
 import Alamofire
 import Cache
 
 protocol AMGiphyViewModelDelegate: class {
     
-    func giphyModel(_ item: AMGiphyViewModel?, loadedThumbnail data: Data?)
-    func giphyModel(_ item: AMGiphyViewModel?, loadedGif path: String?)
+    func giphyModelDidStartLoadingThumbnail(_ item: AMGiphyViewModel?)
+    func giphyModelDidEndLoadingThumbnail(_ item: AMGiphyViewModel?)
+    
+    func giphyModel(_ item: AMGiphyViewModel?, thumbnail data: Data?)
+    func giphyModel(_ item: AMGiphyViewModel?, gifAsset asset: AVAsset)
 }
 
 class AMGiphyViewModel {
@@ -22,17 +26,20 @@ class AMGiphyViewModel {
     
     public let gifItem: AMGiphyItem
     
-    private var previewData: Data?
-    private var gifData: Data? //Video
-    
     private var previewRequest: DownloadRequest?
     private var gifRequest: DownloadRequest?
+    
+    private var gifAsset: AVAsset?
     
     init(_ item: AMGiphyItem) {
         gifItem = item
     }
     
     func prefetchData() {
+        if AMGiphyCacheProvider.shared.existGif(gifItem.id) {
+            createPlayer()
+            return
+        }
         if !AMGiphyCacheProvider.shared.existThumbnail(gifItem.id) {
             fetchThumbnail()
         }
@@ -43,18 +50,25 @@ class AMGiphyViewModel {
     }
     
     func fetchData() {
+        if let asset = gifAsset {
+            self.delegate?.giphyModel(self, gifAsset: asset)
+            return
+        }
         if AMGiphyCacheProvider.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, loadedGif: AMGiphyCacheProvider.shared.gifCachePath(for: gifItem.id))
-        } else if AMGiphyCacheProvider.shared.existThumbnail(gifItem.id) {
+            createPlayer()
+            return
+        }
+        if AMGiphyCacheProvider.shared.existThumbnail(gifItem.id) {
             AMGiphyCacheProvider.shared.thumbnailCache(for: gifItem.id, completion: {[weak self] (data) in
-                self?.delegate?.giphyModel(self, loadedThumbnail: data)
+                self?.delegate?.giphyModel(self, thumbnail: data)
             })
             fetchGifData()
-        } else {
-            fetchThumbnail({[weak self] in
-                self?.fetchGifData()
-           })
+            return
         }
+        fetchThumbnail({[weak self] in
+            self?.fetchGifData()
+        })
+        
     }
     
     func stopFetching() {
@@ -62,15 +76,27 @@ class AMGiphyViewModel {
         gifRequest?.suspend()
     }
     
-    
     //MARK: - Private Methods
+    private func createPlayer() {
+        guard let gifPath = AMGiphyCacheProvider.shared.gifCachePath(for: gifItem.id) else {
+            return
+        }
+        let gifUrl = URL(fileURLWithPath: gifPath)
+        gifAsset = AVAsset(url: gifUrl)
+        delegate?.giphyModel(self, gifAsset: gifAsset!)
+    }
+    
     private func fetchThumbnail(_ completion: (()->Void)? = nil) {
+        delegate?.giphyModelDidStartLoadingThumbnail(self)
         previewRequest = Alamofire.download(gifItem.thumbnailUrl ?? "", to: destionation(gifItem.id + "_thumbnail"))
         previewRequest?.responseData(completionHandler: {[weak self] (responce) in
             if let data = responce.value, let key = self?.gifItem.id {
                 AMGiphyCacheProvider.shared.cacheThumbnail(data, with: key)
             }
-            self?.delegate?.giphyModel(self, loadedThumbnail: responce.value)
+            
+            self?.delegate?.giphyModelDidEndLoadingThumbnail(self)
+            
+            self?.delegate?.giphyModel(self, thumbnail: responce.value)
             self?.removeTemporaryCache(responce.destinationURL)
             
             if let callback = completion {
@@ -85,11 +111,9 @@ class AMGiphyViewModel {
             if let data = responce.value, let key = self?.gifItem.id {
                 AMGiphyCacheProvider.shared.cacheGif(data, with: key, completion: { (success) in
                     if success {
-                        self?.delegate?.giphyModel(self, loadedGif: AMGiphyCacheProvider.shared.gifCachePath(for: key))
+                        self?.createPlayer()
                     }
                 })
-            } else {
-                self?.delegate?.giphyModel(self, loadedGif: nil)
             }
             self?.removeTemporaryCache(responce.destinationURL)
         })

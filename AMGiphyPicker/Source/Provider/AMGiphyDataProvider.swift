@@ -79,10 +79,10 @@ class AMGiphyDataProvider: NSObject {
     
     private static func convertToItem(_ giphy: [GPHMedia]) -> [AMGiphyItem] {
         let result = giphy.map { (giphy) -> AMGiphyItem in
-            let width = giphy.images?.fixedHeightSmall?.width ?? 100
-            let height = giphy.images?.fixedHeightSmall?.height ?? 100
+            let width = giphy.images?.fixedHeight?.width ?? 100
+            let height = giphy.images?.fixedHeight?.height ?? 100
             let size = CGSize(width: width, height: height)
-            return AMGiphyItem(giphy.id, thumbnail: giphy.images?.fixedHeightSmallStill?.gifUrl, gif: giphy.images?.fixedHeightSmall?.mp4Url, size: size)
+            return AMGiphyItem(giphy.id, thumbnail: giphy.images?.fixedHeightStill?.gifUrl, gif: giphy.images?.fixedHeight?.mp4Url, size: size)
         }
         return result
     }

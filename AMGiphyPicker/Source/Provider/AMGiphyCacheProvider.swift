@@ -77,7 +77,7 @@ class AMGiphyCacheProvider {
     }
     
     func thumbnailCachePath(for key: String) -> String? {
-        return thumbnailsStorage.makeFilePath(key)
+        return thumbnailsStorage.makeFilePath(key + "_thumbnail")
     }
     
     func gifCachePath(for key: String) -> String? {
