@@ -62,6 +62,18 @@ class AMGiphyCell: UICollectionViewCell {
         model.fetchData()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        playerLayer.frame = bounds
+    }
+    
+    @objc private func videoLoop() {
+        player?.pause()
+        player?.currentItem?.seek(to: kCMTimeZero, completionHandler: nil)
+        player?.play()
+    }
+ 
+    //MARK: - Loading Indicator
     private func startIndicator() {
         if !self.indicator.isAnimating {
             DispatchQueue.main.async {
@@ -80,7 +92,7 @@ class AMGiphyCell: UICollectionViewCell {
             }
         }
     }
-    
+     
     override func prepareForReuse() {
         stopIndicator()
         
