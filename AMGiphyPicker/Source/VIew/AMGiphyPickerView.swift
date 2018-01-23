@@ -102,10 +102,6 @@ extension AMGiphyPickerView: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             giphy[indexPath.row].prefetchData()
-            
-            if giphy.count - indexPath.row < limit/2 {
-                loadNext()
-            }
         }
     }
     
@@ -118,6 +114,12 @@ extension AMGiphyPickerView: UICollectionViewDataSourcePrefetching {
 }
 
 extension AMGiphyPickerView: UICollectionViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
+            loadNext()
+        }
+    }
     
 }
 
