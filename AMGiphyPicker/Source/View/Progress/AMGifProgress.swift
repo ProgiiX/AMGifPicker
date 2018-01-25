@@ -1,5 +1,5 @@
 //
-//  AMGiphyProgress.swift
+//  AMGifProgress.swift
 //  AMGiphyPicker
 //
 //  Created by Alexander Momotiuk on 1/25/18.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class AMGiphyProgress: UIView {
+class AMGifProgress: UIView {
     
-    let progressShape = CAShapeLayer()
-    let backgroundShape = CAShapeLayer()
+    private let progressShape = CAShapeLayer()
+    private let backgroundShape = CAShapeLayer()
     
     init() {
         super.init(frame: .zero)
@@ -67,6 +67,5 @@ class AMGiphyProgress: UIView {
         if isAnimated {
             progressShape.add(animation, forKey: nil)
         }
-        
     }
 }

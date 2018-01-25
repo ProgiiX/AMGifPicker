@@ -1,5 +1,5 @@
 //
-//  AMGiphyItem.swift
+//  AMGif.swift
 //  GiphyComponent
 //
 //  Created by Alexander Momotiuk on 11.01.18.
@@ -14,7 +14,7 @@ fileprivate struct Constants {
     static let defaultWidth = 100
 }
 
-class AMGiphyItem {
+class AMGif {
     
     let id: String
     let thumbnailUrl: String?
@@ -39,16 +39,16 @@ class AMGiphyItem {
     }
 }
 
-extension AMGiphyItem: Hashable {
+extension AMGif: Hashable {
     
     var hashValue: Int {
         return id.hashValue
     }
 }
 
-extension AMGiphyItem: Equatable {
+extension AMGif: Equatable {
     
-    static func ==(lhs: AMGiphyItem, rhs: AMGiphyItem) -> Bool {
+    static func ==(lhs: AMGif, rhs: AMGif) -> Bool {
         return lhs.id == rhs.id
     }
 }

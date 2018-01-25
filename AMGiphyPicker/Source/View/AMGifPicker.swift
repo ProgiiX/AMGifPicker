@@ -1,5 +1,5 @@
 //
-//  AMGiphyComponent.swift
+//  AMGifPicker.swift
 //  Cadence
 //
 //  Created by Alexander Momotiuk on 09.01.18.
@@ -9,14 +9,13 @@
 import UIKit
 import GiphyCoreSDK
 
-class AMGiphyPicker: UIView {
+class AMGifPicker: UIView {
     
-    private var configuration: AMGiphyPickerConfiguration = AMGiphyPickerConfiguration.defaultConfiguration
-    private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
+    public private(set) var giphy: [AMGifViewModel] = []
+    public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration.defaultConfiguration
     
-    private var dataProvider: AMGiphyDataProvider!
-    
-    public private(set) var giphy: [AMGiphyViewModel] = []
+    private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
+    private var dataProvider: AMGifDataProvider!
     private var isLoading = false
     
     override init(frame: CGRect) {
@@ -29,7 +28,7 @@ class AMGiphyPicker: UIView {
         initialize()
     }
     
-    convenience init(configuration: AMGiphyPickerConfiguration) {
+    convenience init(configuration: AMGifPickerConfiguration) {
         self.init(frame: .zero)
         self.configuration = configuration
         initialize()
@@ -41,17 +40,31 @@ class AMGiphyPicker: UIView {
     }
     
     private func initialize() {
-        dataProvider = AMGiphyDataProvider(self.configuration)
+        dataProvider = AMGifDataProvider(self.configuration)
         
         setupCollectionView()
         loadData()
     }
     
+    private func setupCollectionView() {
+        addSubview(collectionView)
+        (collectionView.collectionViewLayout as! AMGifLayout).delegate = self
+        
+        collectionView.backgroundColor = .white
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
+        collectionView.register(AMGifCell.self, forCellWithReuseIdentifier: String(describing: AMGifCell.self))
+        collectionView.reloadData()
+    }
+    
+    //MARK: - Load Data
+    
     private func loadData() {
         isLoading = true
         dataProvider.loadGiphy {[weak self] (items) in
             self?.isLoading = false
-            self?.giphy = items.map { return AMGiphyViewModel.init($0) }
+            self?.giphy = items.map { return AMGifViewModel.init($0) }
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -63,7 +76,7 @@ class AMGiphyPicker: UIView {
         isLoading = true
         dataProvider.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
             if items.count == 0 { return }
-            let viewModels = items.map { return AMGiphyViewModel.init($0) }
+            let viewModels = items.map { return AMGifViewModel.init($0) }
             self?.giphy.append(contentsOf: viewModels)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
@@ -71,21 +84,9 @@ class AMGiphyPicker: UIView {
             }
         }
     }
-    
-    private func setupCollectionView() {
-        addSubview(collectionView)
-        (collectionView.collectionViewLayout as! AMGiphyGridLayout).delegate = self
-        
-        collectionView.backgroundColor = .white
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
-        collectionView.register(AMGiphyCell.self, forCellWithReuseIdentifier: String(describing: AMGiphyCell.self))
-        collectionView.reloadData()
-    }
 }
 
-extension AMGiphyPicker: UICollectionViewDataSource {
+extension AMGifPicker: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -96,7 +97,7 @@ extension AMGiphyPicker: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AMGiphyCell.self), for: indexPath) as! AMGiphyCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AMGifCell.self), for: indexPath) as! AMGifCell
         cell.setupWith(giphy[indexPath.row])
         return cell
     }
@@ -106,7 +107,7 @@ extension AMGiphyPicker: UICollectionViewDataSource {
     }
 }
 
-extension AMGiphyPicker: UICollectionViewDataSourcePrefetching {
+extension AMGifPicker: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
@@ -121,7 +122,7 @@ extension AMGiphyPicker: UICollectionViewDataSourcePrefetching {
     }
 }
 
-extension AMGiphyPicker: UICollectionViewDelegate {
+extension AMGifPicker: UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
@@ -130,7 +131,7 @@ extension AMGiphyPicker: UICollectionViewDelegate {
     }
 }
 
-extension AMGiphyPicker: AMGiphyGridLayoutDelegate {
+extension AMGifPicker: AMGifLayoutDelegate {
     
     func numberOfRows(_ collectionView: UICollectionView) -> Int {
         return configuration.numberRows

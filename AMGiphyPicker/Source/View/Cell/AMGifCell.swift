@@ -1,5 +1,5 @@
 //
-//  AMGiphyCell.swift
+//  AMGifCell.swift
 //  GiphyComponent
 //
 //  Created by Alexander Momotiuk on 09.01.18.
@@ -10,12 +10,12 @@ import UIKit
 import GiphyCoreSDK
 import FLAnimatedImage
 
-class AMGiphyCell: UICollectionViewCell {
+class AMGifCell: UICollectionViewCell {
     
-    private var model: AMGiphyViewModel!
+    private var model: AMGifViewModel!
     let imageView = FLAnimatedImageView()
     let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    var gifIndicator: AMGiphyProgress?
+    var gifIndicator: AMGifProgress?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,7 +49,7 @@ class AMGiphyCell: UICollectionViewCell {
         indicator.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
-    func setupWith(_ media: AMGiphyViewModel) {
+    func setupWith(_ media: AMGifViewModel) {
         model = media
         model.delegate = self
         model.fetchData()
@@ -81,7 +81,7 @@ class AMGiphyCell: UICollectionViewCell {
     
     private func showGifIndicator() {
         if gifIndicator == nil {
-            gifIndicator = AMGiphyProgress(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            gifIndicator = AMGifProgress(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             gifIndicator?.center = CGPoint(x: contentView.frame.width/2, y: contentView.frame.height/2)
             UIView.transition(with: self.gifIndicator!,
                               duration: 0.3,
@@ -119,21 +119,21 @@ class AMGiphyCell: UICollectionViewCell {
     }
 }
 
-extension AMGiphyCell: AMGiphyViewModelDelegate {
+extension AMGifCell: AMGifViewModelDelegate {
 
-    func giphyModelDidBeginLoadingGif(_ item: AMGiphyViewModel?) {
+    func giphyModelDidBeginLoadingGif(_ item: AMGifViewModel?) {
         showGifIndicator()
     }
     
-    func giphyModelDidBeginLoadingThumbnail(_ item: AMGiphyViewModel?) {
+    func giphyModelDidBeginLoadingThumbnail(_ item: AMGifViewModel?) {
         startIndicator()
     }
     
-    func giphyModelDidEndLoadingThumbnail(_ item: AMGiphyViewModel?) {
+    func giphyModelDidEndLoadingThumbnail(_ item: AMGifViewModel?) {
         stopIndicator()
     }
     
-    func giphyModel(_ item: AMGiphyViewModel?, thumbnail data: Data?) {
+    func giphyModel(_ item: AMGifViewModel?, thumbnail data: Data?) {
         DispatchQueue.main.async {
             if let imageData = data {
                 UIView.transition(with: self.imageView,
@@ -147,7 +147,7 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
         }
     }
     
-    func giphyModel(_ item: AMGiphyViewModel?, gifData data: Data?) {
+    func giphyModel(_ item: AMGifViewModel?, gifData data: Data?) {
         DispatchQueue.main.async {
             if let data = data {
                 UIView.transition(with: self.imageView,
@@ -164,7 +164,7 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
         }
     }
     
-    func giphyModel(_ item: AMGiphyViewModel?, gifProgress progress: CGFloat) {
+    func giphyModel(_ item: AMGifViewModel?, gifProgress progress: CGFloat) {
         gifIndicator?.updateIndicator(with: progress, isAnimated: true)
     }
 }
