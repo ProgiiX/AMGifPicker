@@ -1,5 +1,5 @@
 //
-//  AMGiphyGridLayout.swift
+//  AMGifLayout.swift
 //  GiphyComponent
 //
 //  Created by Alexander Momotiuk on 11.01.18.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol AMGiphyGridLayoutDelegate: class {
+protocol AMGifLayoutDelegate: class {
     
     func numberOfRows(_ collectionView: UICollectionView) -> Int
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat
 }
 
-class AMGiphyGridLayout: UICollectionViewLayout {
+class AMGifLayout: UICollectionViewLayout {
     
-    weak var delegate: AMGiphyGridLayoutDelegate?
+    weak var delegate: AMGifLayoutDelegate?
     
     private var contentHeight: CGFloat {
         return collectionView?.bounds.height ?? 0.0

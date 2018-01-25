@@ -1,5 +1,5 @@
 //
-//  AMGiphyViewModel.swift
+//  AMGifViewModel.swift
 //  GiphyComponent
 //
 //  Created by Alexander Momotiuk on 18.01.18.
@@ -10,38 +10,38 @@ import UIKit
 import Alamofire
 import Cache
 
-protocol AMGiphyViewModelDelegate: class {
+protocol AMGifViewModelDelegate: class {
     
-    func giphyModelDidBeginLoadingThumbnail(_ item: AMGiphyViewModel?)
-    func giphyModelDidEndLoadingThumbnail(_ item: AMGiphyViewModel?)
+    func giphyModelDidBeginLoadingThumbnail(_ item: AMGifViewModel?)
+    func giphyModelDidEndLoadingThumbnail(_ item: AMGifViewModel?)
     
-    func giphyModelDidBeginLoadingGif(_ item: AMGiphyViewModel?)
+    func giphyModelDidBeginLoadingGif(_ item: AMGifViewModel?)
     
-    func giphyModel(_ item: AMGiphyViewModel?, thumbnail data: Data?)
-    func giphyModel(_ item: AMGiphyViewModel?, gifData data: Data?)
+    func giphyModel(_ item: AMGifViewModel?, thumbnail data: Data?)
+    func giphyModel(_ item: AMGifViewModel?, gifData data: Data?)
     
-    func giphyModel(_ item: AMGiphyViewModel?, gifProgress progress: CGFloat)
+    func giphyModel(_ item: AMGifViewModel?, gifProgress progress: CGFloat)
 }
 
-class AMGiphyViewModel {
+class AMGifViewModel {
     
-    weak var delegate: AMGiphyViewModelDelegate?
+    weak var delegate: AMGifViewModelDelegate?
     
-    public let gifItem: AMGiphyItem
+    public let gifItem: AMGif
     
     private var previewRequest: DownloadRequest?
     private var gifRequest: DownloadRequest?
     
-    init(_ item: AMGiphyItem) {
+    init(_ item: AMGif) {
         gifItem = item
     }
     
     func prefetchData() {
-        if AMGiphyCacheProvider.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGiphyCacheProvider.shared.gifCache(for: gifItem.id))
+        if AMGifCacheManager.shared.existGif(gifItem.id) {
+            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
             return
         }
-        if !AMGiphyCacheProvider.shared.existThumbnail(gifItem.id) {
+        if !AMGifCacheManager.shared.existThumbnail(gifItem.id) {
             fetchThumbnail()
         }
     }
@@ -51,12 +51,12 @@ class AMGiphyViewModel {
     }
     
     func fetchData() {
-        if AMGiphyCacheProvider.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGiphyCacheProvider.shared.gifCache(for: gifItem.id))
+        if AMGifCacheManager.shared.existGif(gifItem.id) {
+            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
             return
         }
-        if AMGiphyCacheProvider.shared.existThumbnail(gifItem.id) {
-            self.delegate?.giphyModel(self, thumbnail: AMGiphyCacheProvider.shared.thumbnailCache(for: gifItem.id))
+        if AMGifCacheManager.shared.existThumbnail(gifItem.id) {
+            self.delegate?.giphyModel(self, thumbnail: AMGifCacheManager.shared.thumbnailCache(for: gifItem.id))
             fetchGifData()
             return
         }
@@ -85,7 +85,7 @@ class AMGiphyViewModel {
                 }
                 
                 if let data = responce.value, let key = self?.gifItem.id {
-                    AMGiphyCacheProvider.shared.cacheThumbnail(data, with: key)
+                    AMGifCacheManager.shared.cacheThumbnail(data, with: key)
                 }
                 
                 self?.delegate?.giphyModelDidEndLoadingThumbnail(self)
@@ -114,7 +114,7 @@ class AMGiphyViewModel {
                     return
                 }
                 if let data = responce.value, let key = self?.gifItem.id {
-                    AMGiphyCacheProvider.shared.cacheGif(data, with: key, completion: { (success) in
+                    AMGifCacheManager.shared.cacheGif(data, with: key, completion: { (success) in
                         if success {
                             self?.delegate?.giphyModel(self, gifData: data)
                         }

@@ -10,9 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var gifView: AMGiphyPicker!
+    @IBOutlet weak var gifView: AMGifPicker!
     
-    @IBOutlet weak var progress: AMGiphyProgress!
+    @IBOutlet weak var progress: AMGifProgress!
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,5 +1,5 @@
 //
-//  AMGiphyCacheProvider.swift
+//  AMGifCacheManager.swift
 //  GiphyComponent
 //
 //  Created by Alexander Momotiuk on 15.01.18.
@@ -12,16 +12,16 @@ import Cache
 fileprivate let megabyte: UInt = 1024 * 1024
 fileprivate let hour: TimeInterval = 60 * 60
 
-class AMGiphyCacheProvider {
+class AMGifCacheManager {
     
-    static let shared = AMGiphyCacheProvider()
+    static let shared = AMGifCacheManager()
     
     private var thumbnailsStorage: Storage!
     private var gifsStorage: Storage!
     
     private init() {
         let mainDirectoryUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let cacheDirectory = URL(string: mainDirectoryUrl.absoluteString + "/giphy-cache")!
+        let cacheDirectory = URL(string: mainDirectoryUrl.absoluteString + "/gif-cache")!
         
         initStorage(cacheDirectory)
     }
