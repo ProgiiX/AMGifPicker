@@ -12,6 +12,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var gifView: AMGiphyPicker!
     
+    @IBOutlet weak var progress: AMGiphyProgress!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -20,6 +22,11 @@ class ViewController: UIViewController {
         
     }
 
+    
+    @IBAction func click(_ sender: Any) {
+        progress.updateIndicator(with: 90, isAnimated: true)
+        
+    }
     
 }
 

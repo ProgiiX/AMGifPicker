@@ -11,10 +11,10 @@ import GiphyCoreSDK
 
 class AMGiphyPicker: UIView {
     
-    private var settings: AMGiphyPickerSettings = AMGiphyPickerSettings.defaultSettings
+    private var configuration: AMGiphyPickerConfiguration = AMGiphyPickerConfiguration.defaultConfiguration
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGiphyGridLayout())
     
-    private let dataProvider = AMGiphyDataProvider()
+    private var dataProvider: AMGiphyDataProvider!
     
     public private(set) var giphy: [AMGiphyViewModel] = []
     private var isLoading = false
@@ -29,9 +29,10 @@ class AMGiphyPicker: UIView {
         initialize()
     }
     
-    convenience init(settings: AMGiphyPickerSettings) {
+    convenience init(configuration: AMGiphyPickerConfiguration) {
         self.init(frame: .zero)
-        self.settings = settings
+        self.configuration = configuration
+        initialize()
     }
     
     override func layoutSubviews() {
@@ -40,11 +41,17 @@ class AMGiphyPicker: UIView {
     }
     
     private func initialize() {
+        dataProvider = AMGiphyDataProvider(self.configuration)
+        
         setupCollectionView()
+        loadData()
+    }
+    
+    private func loadData() {
         isLoading = true
         dataProvider.loadGiphy {[weak self] (items) in
             self?.isLoading = false
-            self?.giphy = AMGiphyPicker.convertModels(items)
+            self?.giphy = items.map { return AMGiphyViewModel.init($0) }
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -55,7 +62,9 @@ class AMGiphyPicker: UIView {
         if isLoading { return }
         isLoading = true
         dataProvider.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
-            self?.giphy.append(contentsOf: AMGiphyPicker.convertModels(items))
+            if items.count == 0 { return }
+            let viewModels = items.map { return AMGiphyViewModel.init($0) }
+            self?.giphy.append(contentsOf: viewModels)
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
                 self?.isLoading = false
@@ -74,13 +83,6 @@ class AMGiphyPicker: UIView {
         collectionView.register(AMGiphyCell.self, forCellWithReuseIdentifier: String(describing: AMGiphyCell.self))
         collectionView.reloadData()
     }
-    
-    private static func convertModels(_ items: [AMGiphyItem]) -> [AMGiphyViewModel] {
-        let result = items.map { (item) -> AMGiphyViewModel in
-            return AMGiphyViewModel(item)
-        }
-        return result
-    }
 }
 
 extension AMGiphyPicker: UICollectionViewDataSource {
@@ -97,6 +99,10 @@ extension AMGiphyPicker: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AMGiphyCell.self), for: indexPath) as! AMGiphyCell
         cell.setupWith(giphy[indexPath.row])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        giphy[indexPath.item].stopFetching()
     }
 }
 
@@ -122,36 +128,18 @@ extension AMGiphyPicker: UICollectionViewDelegate {
             loadNext()
         }
     }
-    
 }
 
 extension AMGiphyPicker: AMGiphyGridLayoutDelegate {
     
     func numberOfRows(_ collectionView: UICollectionView) -> Int {
-        return settings.numberRows
+        return configuration.numberRows
     }
     
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat {
         let itemSize = giphy[indexPath.item].gifItem.size
         
-        if itemSize.height > height {
-            let ratio = itemSize.height/height
-            return itemSize.width/ratio
-        } else if itemSize.height < height {
-            let ratio = height/itemSize.height
-            return itemSize.width*ratio
-        }
-        return height
+        let ratio = height/itemSize.height
+        return itemSize.width*ratio
     }
 }
-
-
-
-
-
-
-
-
-
-
-

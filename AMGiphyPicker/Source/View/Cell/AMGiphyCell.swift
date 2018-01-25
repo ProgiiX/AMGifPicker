@@ -9,15 +9,13 @@
 import UIKit
 import GiphyCoreSDK
 import FLAnimatedImage
-import AVKit
 
 class AMGiphyCell: UICollectionViewCell {
     
     private var model: AMGiphyViewModel!
-    let imageView = UIImageView()
+    let imageView = FLAnimatedImageView()
     let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-    
-    let playerLayer = AVPlayerLayer()
+    var gifIndicator: AMGiphyProgress?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,22 +32,17 @@ class AMGiphyCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        playerLayer.backgroundColor = UIColor.clear.cgColor
-        playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        contentView.layer.addSublayer(playerLayer)
-        
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         imageView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         imageView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         imageView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-
+        
         contentView.addSubview(indicator)
         indicator.isHidden = true
         indicator.translatesAutoresizingMaskIntoConstraints = false
-
         indicator.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
         indicator.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
         indicator.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -64,15 +57,9 @@ class AMGiphyCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        playerLayer.frame = bounds
+        gifIndicator?.center = CGPoint(x: contentView.frame.width/2, y: contentView.frame.height/2)
     }
     
-    @objc private func videoLoop() {
-        player?.pause()
-        player?.currentItem?.seek(to: kCMTimeZero, completionHandler: nil)
-        player?.play()
-    }
- 
     //MARK: - Loading Indicator
     private func startIndicator() {
         if !self.indicator.isAnimating {
@@ -80,7 +67,6 @@ class AMGiphyCell: UICollectionViewCell {
                 self.indicator.startAnimating()
                 self.indicator.isHidden = false
             }
-            
         }
     }
     
@@ -92,38 +78,54 @@ class AMGiphyCell: UICollectionViewCell {
             }
         }
     }
-     
+    
+    private func showGifIndicator() {
+        if gifIndicator == nil {
+            gifIndicator = AMGiphyProgress(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            gifIndicator?.center = CGPoint(x: contentView.frame.width/2, y: contentView.frame.height/2)
+            UIView.transition(with: self.gifIndicator!,
+                              duration: 0.3,
+                              options: .transitionCrossDissolve,
+                              animations: {
+                                self.contentView.addSubview(self.gifIndicator!)
+            }, completion: nil)
+        }
+    }
+    
+    private func hideGifIndicator() {
+        if let indicator = gifIndicator {
+            UIView.transition(with: indicator,
+                              duration: 0.3,
+                              options: .transitionCrossDissolve,
+                              animations: {
+                                indicator.removeFromSuperview()
+            }, completion: nil)
+        }
+    }
+    
     override func prepareForReuse() {
         stopIndicator()
+        
+        gifIndicator?.removeFromSuperview()
+        gifIndicator = nil
         
         model.delegate = nil
         model.stopFetching()
         model = nil
         
         imageView.image = nil
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerLayer.player?.currentItem)
-        playerLayer.player = nil
-        
+        imageView.animatedImage = nil
         super.prepareForReuse()
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        playerLayer.frame = bounds
-    }
-    
-    @objc private func videoLoop() {
-        playerLayer.player?.pause()
-        playerLayer.player?.currentItem?.seek(to: kCMTimeZero, completionHandler: nil)
-        playerLayer.player?.play()
-    }
-    
 }
 
 extension AMGiphyCell: AMGiphyViewModelDelegate {
+
+    func giphyModelDidBeginLoadingGif(_ item: AMGiphyViewModel?) {
+        showGifIndicator()
+    }
     
-    func giphyModelDidStartLoadingThumbnail(_ item: AMGiphyViewModel?) {
+    func giphyModelDidBeginLoadingThumbnail(_ item: AMGiphyViewModel?) {
         startIndicator()
     }
     
@@ -135,7 +137,7 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
         DispatchQueue.main.async {
             if let imageData = data {
                 UIView.transition(with: self.imageView,
-                                  duration: 0.15,
+                                  duration: 0.1,
                                   options: .transitionCrossDissolve,
                                   animations: {
                                     self.imageView.image = UIImage(data: imageData)
@@ -145,18 +147,25 @@ extension AMGiphyCell: AMGiphyViewModelDelegate {
         }
     }
     
-    func giphyModel(_ item: AMGiphyViewModel?, gifAsset asset: AVAsset) {
+    func giphyModel(_ item: AMGiphyViewModel?, gifData data: Data?) {
         DispatchQueue.main.async {
-            let playerItem = AVPlayerItem(asset: asset)
-            let player = AVPlayer(playerItem: playerItem)
-            self.playerLayer.player = player
-            player.play()
-            
-            self.imageView.isHidden = true
-            self.imageView.image = nil
-            
-            NotificationCenter.default.addObserver(self, selector: #selector(self.videoLoop), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.playerLayer.player!.currentItem)
+            if let data = data {
+                UIView.transition(with: self.imageView,
+                                  duration: 0.1,
+                                  options: .transitionCrossDissolve,
+                                  animations: {
+                                    self.imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+                                  },
+                                  completion: {(_) in
+                                    self.hideGifIndicator()
+                })
+                
+            }
         }
+    }
+    
+    func giphyModel(_ item: AMGiphyViewModel?, gifProgress progress: CGFloat) {
+        gifIndicator?.updateIndicator(with: progress, isAnimated: true)
     }
 }
 

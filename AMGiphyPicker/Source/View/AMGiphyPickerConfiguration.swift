@@ -12,17 +12,17 @@ enum AMGiphyPickerScrollDirection {
     case horizontal
 }
 
-struct AMGiphyPickerSettings {
+struct AMGiphyPickerConfiguration {
     
-    static var defaultSettings: AMGiphyPickerSettings {
-        return AMGiphyPickerSettings()
+    static var defaultConfiguration: AMGiphyPickerConfiguration {
+        return AMGiphyPickerConfiguration()
     }
     
-    public private(set) var numberRows: Int = 2
-    public private(set) var scrollDirection: AMGiphyPickerScrollDirection = .horizontal
+    public private(set) var numberRows: Int 
+    public private(set) var scrollDirection: AMGiphyPickerScrollDirection
     
     // Maximum gifs for one search string
-    public private(set) var maxLoadCount: Int = 200
+    public private(set) var maxLoadCount: Int
     
     init(rows: Int = 2, direction: AMGiphyPickerScrollDirection = .horizontal, maxCount: Int = 200) {
         numberRows = rows
