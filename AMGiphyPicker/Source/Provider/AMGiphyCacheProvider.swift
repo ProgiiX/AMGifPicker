@@ -12,11 +12,6 @@ import Cache
 fileprivate let megabyte: UInt = 1024 * 1024
 fileprivate let hour: TimeInterval = 60 * 60
 
-enum AMGiphyCacheType {
-    case trending
-    case search
-}
-
 class AMGiphyCacheProvider {
     
     static let shared = AMGiphyCacheProvider()
@@ -33,10 +28,13 @@ class AMGiphyCacheProvider {
     
     private func initStorage(_ url: URL) {
         let thumbnailsMemoryConfig = DiskConfig(name: "thumbnails", expiry: .seconds(hour), maxSize: megabyte * 10, directory: url, protectionType: nil)
-        let gifsMemoryConfig = DiskConfig(name: "gifs", expiry: .seconds(hour), maxSize: megabyte * 50, directory: url, protectionType: nil)
+        let gifsMemoryConfig = DiskConfig(name: "gifs", expiry: .seconds(hour), maxSize: megabyte * 100, directory: url, protectionType: nil)
         
         thumbnailsStorage = try! Storage(diskConfig: thumbnailsMemoryConfig)
         gifsStorage = try! Storage(diskConfig: gifsMemoryConfig)
+        
+        try? thumbnailsStorage.removeExpiredObjects()
+        try? gifsStorage.removeExpiredObjects()
     }
     
     func cacheThumbnail(_ data: Data, with key: String) {
@@ -54,36 +52,12 @@ class AMGiphyCacheProvider {
         }
     }
     
-    func thumbnailCache(for key: String, completion: @escaping (Data?) -> Void) {
-        let data = try? thumbnailsStorage.object(ofType: Data.self, forKey: key + "_thumbnail")
-        completion(data)
-//        thumbnailsStorage.async.object(ofType: Data.self, forKey: key + "_thumbnail") { (result) in
-//            switch result {
-//            case .value(let data):
-//                completion(data)
-//            case .error(_):
-//                completion(nil)
-//            }
-//        }
+    func thumbnailCache(for key: String) -> Data? {
+        return try? thumbnailsStorage.object(ofType: Data.self, forKey: key + "_thumbnail")
     }
     
-    func gifCache(for key: String, completion: @escaping (Data?) -> Void) {
-        gifsStorage.async.object(ofType: Data.self, forKey: key) { (result) in
-            switch result {
-            case .value(let data):
-                completion(data)
-            case .error(_):
-                completion(nil)
-            }
-        }
-    }
-    
-    func thumbnailCachePath(for key: String) -> String? {
-        return thumbnailsStorage.makeFilePath(key + "_thumbnail")
-    }
-    
-    func gifCachePath(for key: String) -> String? {
-        return gifsStorage.makeFilePath(key)
+    func gifCache(for key: String) -> Data? {
+        return try? gifsStorage.object(ofType: Data.self, forKey: key)
     }
     
     func existThumbnail(_ key: String) -> Bool {
@@ -99,6 +73,13 @@ class AMGiphyCacheProvider {
             return try gifsStorage.existsObject(ofType: Data.self, forKey: key)
         } catch {
             return false
+        }
+    }
+    
+    func cleanCache() {
+        DispatchQueue.global().async { [weak self] in
+            try? self?.gifsStorage.removeExpiredObjects()
+            try? self?.thumbnailsStorage.removeExpiredObjects()
         }
     }
 }
