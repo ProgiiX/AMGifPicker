@@ -9,7 +9,14 @@
 import UIKit
 import GiphyCoreSDK
 
+protocol AMGifPickerDelegate: class {
+    
+    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif)
+}
+
 class AMGifPicker: UIView {
+    
+    weak var delegate: AMGifPickerDelegate?
     
     public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
     
@@ -57,13 +64,20 @@ class AMGifPicker: UIView {
         super.layoutSubviews()
         collectionView.frame = bounds
     }
+    
+    //MARK: - Public Methods
+    func search(_ text: String?) {
+        model.search(text)
+    }
 }
 
 extension AMGifPicker: AMGifPickerModelDelegate {
     
     func model(_ model: AMGifPickerModel, didInsert indexPath: [IndexPath]) {
         DispatchQueue.main.async {
-            self.collectionView.insertItems(at: indexPath)
+            self.collectionView.performBatchUpdates({
+                self.collectionView.insertItems(at: indexPath)
+            }, completion: nil)
         }
     }
     
@@ -114,10 +128,11 @@ extension AMGifPicker: UICollectionViewDataSourcePrefetching {
 
 extension AMGifPicker: UICollectionViewDelegate {
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
-            model.loadNext()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = model.item(at: indexPath.row) else {
+            return
         }
+        delegate?.gifPicker(self, didSelected: item.gifItem)
     }
 }
 
@@ -133,5 +148,15 @@ extension AMGifPicker: AMGifLayoutDelegate {
         } 
         let ratio = height/itemSize.height
         return itemSize.width*ratio
+    }
+}
+
+//MARK: - UIScrollView Delegate
+extension AMGifPicker {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
+            model.loadNext()
+        }
     }
 }

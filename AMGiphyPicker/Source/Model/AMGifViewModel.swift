@@ -82,7 +82,7 @@ class AMGifViewModel {
     private func fetchThumbnail(_ completion: (()->Void)? = nil) {
         delegate?.giphyModelDidBeginLoadingThumbnail(self)
         
-        if previewRequest != nil, let suspend = previewRequest?.delegate.queue.isSuspended, suspend {
+        if previewRequest != nil, let suspend = previewRequest?.delegate.queue.isSuspended, suspend, previewRequest?.delegate == nil {
             self.previewRequest?.resume()
         } else {
             self.previewRequest = Alamofire.download(self.gifItem.thumbnailUrl ?? "", to: self.destionation(self.gifItem.id + "_thumbnail"))
@@ -112,7 +112,7 @@ class AMGifViewModel {
     private func fetchGifData() {
         self.delegate?.giphyModelDidBeginLoadingGif(self)
         
-        if gifRequest != nil, let suspend = gifRequest?.delegate.queue.isSuspended, suspend {
+        if gifRequest != nil, let suspend = gifRequest?.delegate.queue.isSuspended, suspend, gifRequest?.delegate == nil {
             self.gifRequest?.resume()
         } else {
             self.gifRequest = Alamofire.download(self.gifItem.gifUrl ?? "", to: self.destionation(self.gifItem.id))
