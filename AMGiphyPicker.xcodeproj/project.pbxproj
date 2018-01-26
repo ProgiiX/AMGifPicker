@@ -23,6 +23,7 @@
 		9C49D8D1EDF8C0EB9E233ACF /* Pods_AMGiphyPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4349B166CBAA2E233C116F99 /* Pods_AMGiphyPicker.framework */; };
 		FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */; };
 		FACA08DC2019FE2B0060A627 /* AMGifProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */; };
+		FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		647590E82FF6C68ABFD8F6E2 /* Pods_GiphyComponent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GiphyComponent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifPickerConfiguration.swift; sourceTree = "<group>"; };
 		FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifProgress.swift; sourceTree = "<group>"; };
+		FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSet+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		1221AB9D20114E9800B72AC9 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				FADDD019201B30FA002A9EA8 /* Extension */,
 				12992CCC200D43D30054B9E5 /* Provider */,
 				1221AB9F20114ECA00B72AC9 /* Layout */,
 				12992CCD200D43DF0054B9E5 /* Model */,
@@ -186,6 +189,14 @@
 				FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */,
 			);
 			path = Progress;
+			sourceTree = "<group>";
+		};
+		FADDD019201B30FA002A9EA8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */,
 				12996632201A875E00DB7AFB /* AMGifPickerModel.swift in Sources */,
 				12E780642006CF8F0068C8F7 /* AMGif.swift in Sources */,
 				12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */,
