@@ -11,11 +11,10 @@ import GiphyCoreSDK
 
 class AMGifPicker: UIView {
     
-    public private(set) var giphy: [AMGifViewModel] = []
-    public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration.defaultConfiguration
+    public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
     
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
-    private var dataProvider: AMGifDataProvider!
+    private var model: AMGifPickerModel!
     private var isLoading = false
     
     override init(frame: CGRect) {
@@ -34,18 +33,14 @@ class AMGifPicker: UIView {
         initialize()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        collectionView.frame = bounds
-    }
-    
     private func initialize() {
-        dataProvider = AMGifDataProvider(self.configuration)
-        
         setupCollectionView()
-        loadData()
+        
+        model = AMGifPickerModel(config: self.configuration)
+        model.delegate = self
     }
     
+    //MARK: - Layout
     private func setupCollectionView() {
         addSubview(collectionView)
         (collectionView.collectionViewLayout as! AMGifLayout).delegate = self
@@ -58,30 +53,23 @@ class AMGifPicker: UIView {
         collectionView.reloadData()
     }
     
-    //MARK: - Load Data
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        collectionView.frame = bounds
+    }
+}
+
+extension AMGifPicker: AMGifPickerModelDelegate {
     
-    private func loadData() {
-        isLoading = true
-        dataProvider.loadGiphy {[weak self] (items) in
-            self?.isLoading = false
-            self?.giphy = items.map { return AMGifViewModel.init($0) }
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
-            }
+    func model(_ model: AMGifPickerModel, didInsert indexPath: [IndexPath]) {
+        DispatchQueue.main.async {
+            self.collectionView.insertItems(at: indexPath)
         }
     }
     
-    private func loadNext() {
-        if isLoading { return }
-        isLoading = true
-        dataProvider.loadGiphy(nil, offset: giphy.count) {[weak self] (items) in
-            if items.count == 0 { return }
-            let viewModels = items.map { return AMGifViewModel.init($0) }
-            self?.giphy.append(contentsOf: viewModels)
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
-                self?.isLoading = false
-            }
+    func modelDidUpdatedData(_ model: AMGifPickerModel) {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
         }
     }
 }
@@ -93,17 +81,19 @@ extension AMGifPicker: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return giphy.count
+        return model.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AMGifCell.self), for: indexPath) as! AMGifCell
-        cell.setupWith(giphy[indexPath.row])
+        if let item = model.item(at: indexPath.row) {
+            cell.setupWith(item)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        giphy[indexPath.item].stopFetching()
+        model.item(at: indexPath.row)?.stopFetching()
     }
 }
 
@@ -111,13 +101,13 @@ extension AMGifPicker: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            giphy[indexPath.row].prefetchData()
+            model.item(at: indexPath.row)?.prefetchData()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            giphy[indexPath.row].cancelPrefecth()
+            model.item(at: indexPath.row)?.cancelPrefecth()
         }
     }
 }
@@ -126,7 +116,7 @@ extension AMGifPicker: UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
-            loadNext()
+            model.loadNext()
         }
     }
 }
@@ -138,8 +128,9 @@ extension AMGifPicker: AMGifLayoutDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat {
-        let itemSize = giphy[indexPath.item].gifItem.size
-        
+        guard let itemSize = model.item(at: indexPath.row)?.gifItem.size else {
+            return 0
+        } 
         let ratio = height/itemSize.height
         return itemSize.width*ratio
     }

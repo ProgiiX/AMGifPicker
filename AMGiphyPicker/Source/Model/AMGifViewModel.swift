@@ -36,20 +36,7 @@ class AMGifViewModel {
         gifItem = item
     }
     
-    func prefetchData() {
-        if AMGifCacheManager.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
-            return
-        }
-        if !AMGifCacheManager.shared.existThumbnail(gifItem.id) {
-            fetchThumbnail()
-        }
-    }
-    
-    func cancelPrefecth() {
-        previewRequest?.suspend()
-    }
-    
+    //MARK: - Fetch Data
     func fetchData() {
         if AMGifCacheManager.shared.existGif(gifItem.id) {
             self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
@@ -68,6 +55,27 @@ class AMGifViewModel {
     func stopFetching() {
         previewRequest?.suspend()
         gifRequest?.suspend()
+    }
+    
+    //MARK: - Pre-fetching methods
+    func prefetchData() {
+        if AMGifCacheManager.shared.existGif(gifItem.id) {
+            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
+            return
+        }
+        if !AMGifCacheManager.shared.existThumbnail(gifItem.id) {
+            fetchThumbnail()
+        }
+    }
+    
+    func cancelPrefecth() {
+        previewRequest?.suspend()
+    }
+    
+    //MARK: - Cancel
+    func cancelFetching() {
+        previewRequest?.cancel()
+        gifRequest?.cancel()
     }
     
     //MARK: - Private Methods
@@ -145,5 +153,16 @@ class AMGifViewModel {
             
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
+    }
+}
+
+extension AMGifViewModel: Hashable {
+    
+    static func ==(lhs: AMGifViewModel, rhs: AMGifViewModel) -> Bool {
+        return lhs.gifItem.id == rhs.gifItem.id
+    }
+    
+    var hashValue: Int {
+        return gifItem.hashValue
     }
 }

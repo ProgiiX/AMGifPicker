@@ -46,13 +46,14 @@ class AMGifLayout: UICollectionViewLayout {
         for column in 0 ..< numberOfRows {
             yOffset.append(CGFloat(column) * rowHeight)
         }
-        var column = 0
+        //var column = 0
         var xOffset = [CGFloat](repeating: 0, count: numberOfRows)
         
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
             
             let indexPath = IndexPath(item: item, section: 0)
             
+            let column = xOffset.index(of: xOffset.min()!)!
             let width = delegate.collectionView(collectionView, widthForItemAt: indexPath, withHeight: rowHeight)
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: width, height: rowHeight)
             
@@ -63,14 +64,12 @@ class AMGifLayout: UICollectionViewLayout {
             contentWidth = max(contentWidth, frame.maxX)
             xOffset[column] = xOffset[column] + width
             
-            column = column < (numberOfRows - 1) ? (column + 1) : 0
+            //column = column < (numberOfRows - 1) ? (column + 1) : 0
         }
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
-        
         // Loop through the cache and look for items in the rect
         for attributes in cache {
             if attributes.frame.intersects(rect) {
@@ -82,5 +81,11 @@ class AMGifLayout: UICollectionViewLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cache[indexPath.item]
+    }
+    
+    override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let attribute = super.initialLayoutAttributesForAppearingItem(at: itemIndexPath)
+        attribute?.alpha = 0.0
+        return attribute
     }
 }

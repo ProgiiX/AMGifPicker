@@ -13,6 +13,9 @@ class AMGifDataProvider {
     
     private let client: GPHClient
     
+    private var trendingLoadingOperation: Operation?
+    private var searchLoadingOperation: Operation?
+    
     init(apiKey key: String) {
         self.client = GPHClient(apiKey: key)
     }
@@ -33,7 +36,8 @@ class AMGifDataProvider {
     }
     
     private func getSearchGifs(_ search: String, offset: Int, limit: Int, completion: @escaping (_ data: [AMGif]?) -> Void) {
-        client.search(search, offset: offset, limit: limit, completionHandler: { (responce, error) in
+        searchLoadingOperation?.cancel()
+        searchLoadingOperation = client.search(search, offset: offset, limit: limit, completionHandler: { (responce, error) in
             guard let responceItems = responce?.data else {
                 completion(nil)
                 return
@@ -44,7 +48,8 @@ class AMGifDataProvider {
     }
     
     private func getTrendingGifs(offset: Int, limit: Int, completion: @escaping (_ data: [AMGif]?) -> Void) {
-        client.trending(offset: offset, limit: limit) { (responce, error) in
+        trendingLoadingOperation?.cancel()
+        trendingLoadingOperation = client.trending(offset: offset, limit: limit) { (responce, error) in
             guard let responceItems = responce?.data else {
                 completion(nil)
                 return

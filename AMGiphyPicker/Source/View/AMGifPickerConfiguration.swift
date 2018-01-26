@@ -19,9 +19,8 @@ struct AMGifPickerConfiguration {
     public let scrollDirection: AMGifPickerScrollDirection
     
     // Maximum gifs for one search string
-    public private(set) let maxLoadCount: Int
+    public let maxLoadCount: Int
     
-    //64RLJtsFr7zEXrFbzsAetbduFJU3qpF6
     init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, maxCount: Int = 200) {
         apiKey = key
         numberRows = rows
