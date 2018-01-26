@@ -89,6 +89,8 @@ class AMGifCell: UICollectionViewCell {
                               animations: {
                                 self.contentView.addSubview(self.gifIndicator!)
             }, completion: nil)
+        } else {
+            
         }
     }
     

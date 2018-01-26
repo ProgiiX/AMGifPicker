@@ -8,24 +8,25 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AMGifPickerDelegate {
+    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif) {
+        print(gif.id)
+    }
+    
 
     @IBOutlet weak var gifView: AMGifPicker!
     
-    @IBOutlet weak var progress: AMGifProgress!
+    @IBOutlet weak var searchField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
         
-        
-        
+        gifView.delegate = self
     }
-
     
     @IBAction func click(_ sender: Any) {
-        progress.updateIndicator(with: 90, isAnimated: true)
-        
+        searchField.resignFirstResponder()
+        gifView.search(searchField.text)
     }
     
 }
