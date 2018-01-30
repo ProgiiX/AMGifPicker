@@ -37,7 +37,6 @@ class AMGifPickerModel {
         provider = AMGifDataProvider(apiKey: config.apiKey)
         
         AMGifCacheManager.shared.cleanCache()
-        
         loadData()
     }
 }
@@ -59,7 +58,6 @@ extension AMGifPickerModel {
     private func appendTrending(_ gifs: [AMGif]) {
         let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
         self.trendingGifs.append(contentsOf: gifsViewModel)
-        //self.delegate?.modelDidUpdatedData(self)
     }
     
     func search(_ search: String?) {
