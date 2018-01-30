@@ -1,1 +1,1 @@
-# GiphyPicker
+# AMGifPicker
