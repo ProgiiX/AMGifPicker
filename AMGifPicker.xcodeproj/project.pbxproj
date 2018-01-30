@@ -21,7 +21,6 @@
 		12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9C20056F5A0052308E /* AMGifCell.swift */; };
 		12E780642006CF8F0068C8F7 /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E780632006CF8F0068C8F7 /* AMGif.swift */; };
 		12E7806620080D360068C8F7 /* AMGifLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E7806520080D360068C8F7 /* AMGifLayout.swift */; };
-		9C49D8D1EDF8C0EB9E233ACF /* Pods_AMGiphyPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4349B166CBAA2E233C116F99 /* Pods_AMGiphyPicker.framework */; };
 		FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */; };
 		FACA08DC2019FE2B0060A627 /* AMGifProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */; };
 		FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */; };
@@ -62,7 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C49D8D1EDF8C0EB9E233ACF /* Pods_AMGiphyPicker.framework in Frameworks */,
 				06B053EA4691C3BBD3A4F628 /* Pods_AMGifPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,7 +494,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24F7LAMPJN;
-				INFOPLIST_FILE = "$(SRCROOT)/AMGiphyPicker/Example/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/AMGifPicker/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amgifpicker.app;
@@ -513,7 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24F7LAMPJN;
-				INFOPLIST_FILE = "$(SRCROOT)/AMGiphyPicker/Example/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/AMGifPicker/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amgifpicker.app;

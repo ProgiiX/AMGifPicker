@@ -55,7 +55,10 @@ class AMGifPicker: UIView {
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.prefetchDataSource = self
+        if #available(iOS 10.0, *) {
+            collectionView.prefetchDataSource = self
+        }
+        
         collectionView.register(AMGifCell.self, forCellWithReuseIdentifier: String(describing: AMGifCell.self))
         collectionView.reloadData()
     }
