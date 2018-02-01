@@ -20,9 +20,9 @@ class AMGifPicker: UIView {
     
     public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
     
-    private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
-    private var model: AMGifPickerModel!
-    private var isLoading = false
+    fileprivate let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
+    fileprivate var model: AMGifPickerModel!
+    fileprivate var isLoading = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)

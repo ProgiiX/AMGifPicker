@@ -27,10 +27,10 @@ class AMGifViewModel {
     
     weak var delegate: AMGifViewModelDelegate?
     
-    public let gifItem: AMGif
+    let gifItem: AMGif
     
-    private var previewRequest: DownloadRequest?
-    private var gifRequest: DownloadRequest?
+    fileprivate var previewRequest: DownloadRequest?
+    fileprivate var gifRequest: DownloadRequest?
     
     init(_ item: AMGif) {
         gifItem = item

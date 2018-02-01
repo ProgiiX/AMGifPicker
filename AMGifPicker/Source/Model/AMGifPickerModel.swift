@@ -22,15 +22,15 @@ class AMGifPickerModel {
     
     weak var delegate: AMGifPickerModelDelegate?
     
-    private var configuration: AMGifPickerConfiguration
+    fileprivate var configuration: AMGifPickerConfiguration
     
-    private var trendingGifs: [AMGifViewModel] = []
-    private var searchGifs: [AMGifViewModel] = []
+    fileprivate var trendingGifs: [AMGifViewModel] = []
+    fileprivate var searchGifs: [AMGifViewModel] = []
     
     private var searchString: String? = nil
-    private var isLoading: Bool = false
+    fileprivate var isLoading: Bool = false
     
-    private var provider: AMGifDataProvider
+    fileprivate var provider: AMGifDataProvider
     
     init(config: AMGifPickerConfiguration) {
         configuration = config
@@ -45,7 +45,7 @@ class AMGifPickerModel {
 extension AMGifPickerModel {
     
     //First Fetching
-    private func loadData() {
+    fileprivate func loadData() {
         isLoading = true
         provider.loadGiphy(nil, offset: 0, limit: Configuration.limit) {[weak self] (gifs) in
             self?.isLoading = false
@@ -55,7 +55,7 @@ extension AMGifPickerModel {
         }
     }
     
-    private func appendTrending(_ gifs: [AMGif]) {
+    fileprivate func appendTrending(_ gifs: [AMGif]) {
         let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
         self.trendingGifs.append(contentsOf: gifsViewModel)
     }

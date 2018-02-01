@@ -12,7 +12,7 @@ import FLAnimatedImage
 
 class AMGifCell: UICollectionViewCell {
     
-    private var model: AMGifViewModel!
+    fileprivate var model: AMGifViewModel!
     let imageView = FLAnimatedImageView()
     let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     var gifIndicator: AMGifProgress?
@@ -61,7 +61,7 @@ class AMGifCell: UICollectionViewCell {
     }
     
     //MARK: - Loading Indicator
-    private func startIndicator() {
+    fileprivate func startIndicator() {
         if !self.indicator.isAnimating {
             DispatchQueue.main.async {
                 self.indicator.startAnimating()
@@ -70,7 +70,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    private func stopIndicator() {
+    fileprivate func stopIndicator() {
         if self.indicator.isAnimating {
             DispatchQueue.main.async {
                 self.indicator.isHidden = true
@@ -79,7 +79,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    private func showGifIndicator() {
+    fileprivate func showGifIndicator() {
         if gifIndicator == nil {
             gifIndicator = AMGifProgress(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             gifIndicator?.center = CGPoint(x: contentView.frame.width/2, y: contentView.frame.height/2)
@@ -94,7 +94,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    private func hideGifIndicator() {
+    fileprivate func hideGifIndicator() {
         if let indicator = gifIndicator {
             UIView.transition(with: indicator,
                               duration: 0.3,

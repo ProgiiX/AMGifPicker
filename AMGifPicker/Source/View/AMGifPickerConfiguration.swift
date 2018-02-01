@@ -14,12 +14,12 @@ enum AMGifPickerScrollDirection {
 
 struct AMGifPickerConfiguration {
     
-    public let apiKey: String
-    public let numberRows: Int
-    public let scrollDirection: AMGifPickerScrollDirection
+    let apiKey: String
+    let numberRows: Int
+    let scrollDirection: AMGifPickerScrollDirection
     
     // Maximum gifs for one search string
-    public let maxLoadCount: Int
+    let maxLoadCount: Int
     
     init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, maxCount: Int = 200) {
         apiKey = key
