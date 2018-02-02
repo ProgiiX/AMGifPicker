@@ -1,9 +1,9 @@
 //
 //  AMGifDataProvider.swift
-//  Cadence
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 09.01.18.
-//  Copyright © 2018 Cadence. All rights reserved.
+//  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 
 import Foundation

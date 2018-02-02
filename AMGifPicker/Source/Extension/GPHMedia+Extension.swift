@@ -1,9 +1,9 @@
 //
 //  GPHMedia+Extension.swift
-//  Cadence
+//  AMGifPicker
 //
-//  Created by Alexander Momotiuk on 2/2/18.
-//  Copyright © 2018 Cadence. All rights reserved.
+//  Created by Alexander Momotiuk on 02.02.18.
+//  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 
 import Foundation

@@ -1,9 +1,9 @@
 //
 //  AMGifPicker.swift
-//  Cadence
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 09.01.18.
-//  Copyright © 2018 Cadence. All rights reserved.
+//  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 
 import UIKit
@@ -18,18 +18,17 @@ class AMGifPicker: UIView {
     
     weak var delegate: AMGifPickerDelegate?
     
-    public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
+    public private(set) var configuration: AMGifPickerConfiguration!
     
     private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
     private var model: AMGifPickerModel!
     private var isLoading = false
     
-    override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
-        initialize()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
