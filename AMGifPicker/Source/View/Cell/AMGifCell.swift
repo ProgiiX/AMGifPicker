@@ -1,6 +1,6 @@
 //
 //  AMGifCell.swift
-//  GiphyComponent
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 09.01.18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.
@@ -12,7 +12,7 @@ import FLAnimatedImage
 
 class AMGifCell: UICollectionViewCell {
     
-    fileprivate var model: AMGifViewModel!
+    private var model: AMGifViewModel!
     let imageView = FLAnimatedImageView()
     let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     var gifIndicator: AMGifProgress?
@@ -61,7 +61,7 @@ class AMGifCell: UICollectionViewCell {
     }
     
     //MARK: - Loading Indicator
-    fileprivate func startIndicator() {
+    private func startIndicator() {
         if !self.indicator.isAnimating {
             DispatchQueue.main.async {
                 self.indicator.startAnimating()
@@ -70,7 +70,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func stopIndicator() {
+    private func stopIndicator() {
         if self.indicator.isAnimating {
             DispatchQueue.main.async {
                 self.indicator.isHidden = true
@@ -79,7 +79,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func showGifIndicator() {
+    private func showGifIndicator() {
         if gifIndicator == nil {
             gifIndicator = AMGifProgress(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             gifIndicator?.center = CGPoint(x: contentView.frame.width/2, y: contentView.frame.height/2)
@@ -94,7 +94,7 @@ class AMGifCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func hideGifIndicator() {
+    private func hideGifIndicator() {
         if let indicator = gifIndicator {
             UIView.transition(with: indicator,
                               duration: 0.3,
@@ -122,7 +122,7 @@ class AMGifCell: UICollectionViewCell {
 }
 
 extension AMGifCell: AMGifViewModelDelegate {
-
+    
     func giphyModelDidBeginLoadingGif(_ item: AMGifViewModel?) {
         showGifIndicator()
     }
@@ -157,7 +157,7 @@ extension AMGifCell: AMGifViewModelDelegate {
                                   options: .transitionCrossDissolve,
                                   animations: {
                                     self.imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
-                                  },
+                },
                                   completion: {(_) in
                                     self.hideGifIndicator()
                 })
@@ -170,17 +170,3 @@ extension AMGifCell: AMGifViewModelDelegate {
         gifIndicator?.updateIndicator(with: progress, isAnimated: true)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

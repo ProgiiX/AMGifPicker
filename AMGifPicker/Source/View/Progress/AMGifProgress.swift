@@ -2,7 +2,7 @@
 //  AMGifProgress.swift
 //  AMGiphyPicker
 //
-//  Created by Alexander Momotiuk on 1/25/18.
+//  Created by Alexander Momotiuk on 01.25.18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 

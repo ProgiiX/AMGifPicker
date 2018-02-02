@@ -9,17 +9,27 @@
 import UIKit
 
 class ViewController: UIViewController, AMGifPickerDelegate {
+    
     func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif) {
         print(gif.id)
     }
     
 
-    @IBOutlet weak var gifView: AMGifPicker!
+    var gifView: AMGifPicker!
     
     @IBOutlet weak var searchField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let configuration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
+        gifView = AMGifPicker(configuration: configuration)
+        view.addSubview(gifView)
+        gifView.translatesAutoresizingMaskIntoConstraints = false
+        
+        gifView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        gifView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        gifView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        gifView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         gifView.delegate = self
     }

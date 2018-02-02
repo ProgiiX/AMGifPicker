@@ -1,15 +1,15 @@
 //
-//  AMGifDataProvider.swift
-//  Cadence
+//  AMGifDataService.swift
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 09.01.18.
-//  Copyright © 2018 Cadence. All rights reserved.
+//  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 
 import Foundation
 import GiphyCoreSDK
 
-class AMGifDataProvider {
+class AMGifDataService {
     
     private let client: GPHClient
     

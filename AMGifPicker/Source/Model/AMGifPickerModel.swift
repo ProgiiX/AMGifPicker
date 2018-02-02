@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate struct Configuration {
+private struct Configuration {
     static let limit = 40
 }
 
@@ -22,21 +22,22 @@ class AMGifPickerModel {
     
     weak var delegate: AMGifPickerModelDelegate?
     
-    fileprivate var configuration: AMGifPickerConfiguration
+    private var configuration: AMGifPickerConfiguration
     
-    fileprivate var trendingGifs: [AMGifViewModel] = []
-    fileprivate var searchGifs: [AMGifViewModel] = []
+    private var trendingGifs: [AMGifViewModel] = []
+    private var searchGifs: [AMGifViewModel] = []
     
     private var searchString: String? = nil
-    fileprivate var isLoading: Bool = false
+    private var isLoading: Bool = false
     
-    fileprivate var provider: AMGifDataProvider
+    private var provider: AMGifDataService
     
     init(config: AMGifPickerConfiguration) {
         configuration = config
-        provider = AMGifDataProvider(apiKey: config.apiKey)
+        provider = AMGifDataService(apiKey: config.apiKey)
         
-        AMGifCacheManager.shared.cleanCache()
+        AMGifCache.shared.cleanCache()
+        
         loadData()
     }
 }
@@ -45,7 +46,7 @@ class AMGifPickerModel {
 extension AMGifPickerModel {
     
     //First Fetching
-    fileprivate func loadData() {
+    private func loadData() {
         isLoading = true
         provider.loadGiphy(nil, offset: 0, limit: Configuration.limit) {[weak self] (gifs) in
             self?.isLoading = false
@@ -55,7 +56,7 @@ extension AMGifPickerModel {
         }
     }
     
-    fileprivate func appendTrending(_ gifs: [AMGif]) {
+    private func appendTrending(_ gifs: [AMGif]) {
         let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
         self.trendingGifs.append(contentsOf: gifsViewModel)
     }
@@ -64,6 +65,8 @@ extension AMGifPickerModel {
         if let newSearch = search {
             if newSearch != searchString {
                 searchString = newSearch
+                self.searchGifs = []
+                delegate?.modelDidUpdatedData(self)
                 provider.loadGiphy(newSearch, offset: 0, limit: Configuration.limit, completion: {[weak self] (newGifs) in
                     guard let gifs = newGifs, let strongSelf = self else { return }
                     let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
@@ -77,9 +80,7 @@ extension AMGifPickerModel {
             searchGifs.removeAll()
             
             //If trending gifs already exist
-            if trendingGifs.count >= Configuration.limit {
-                delegate?.modelDidUpdatedData(self)
-            } else {
+            if trendingGifs.count < Configuration.limit {
                 provider.loadGiphy(limit: Configuration.limit, completion: {[weak self] (newGifs) in
                     guard let gifs = newGifs, let strongSelf = self else { return }
                     strongSelf.appendTrending(gifs)
@@ -125,8 +126,8 @@ extension AMGifPickerModel {
     
     func item(at index: Int) -> AMGifViewModel? {
         if searchString != nil {
-            return searchGifs[index]
+            return index < searchGifs.count ? searchGifs[index] : nil
         }
-        return trendingGifs[index]
+        return index < trendingGifs.count ? trendingGifs[index] : nil
     }
 }

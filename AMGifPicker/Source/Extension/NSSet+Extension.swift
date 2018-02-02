@@ -2,7 +2,7 @@
 //  NSSet+Extension.swift
 //  AMGiphyPicker
 //
-//  Created by Alexander Momotiuk on 1/26/18.
+//  Created by Alexander Momotiuk on 01.26.18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 

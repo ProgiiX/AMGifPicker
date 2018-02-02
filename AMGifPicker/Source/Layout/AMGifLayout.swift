@@ -1,6 +1,6 @@
 //
 //  AMGifLayout.swift
-//  GiphyComponent
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 11.01.18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.

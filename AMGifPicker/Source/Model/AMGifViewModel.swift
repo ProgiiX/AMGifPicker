@@ -1,6 +1,6 @@
 //
 //  AMGifViewModel.swift
-//  GiphyComponent
+//  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 18.01.18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.
@@ -27,10 +27,10 @@ class AMGifViewModel {
     
     weak var delegate: AMGifViewModelDelegate?
     
-    let gifItem: AMGif
+    public let gifItem: AMGif
     
-    fileprivate var previewRequest: DownloadRequest?
-    fileprivate var gifRequest: DownloadRequest?
+    private var previewRequest: DownloadRequest?
+    private var gifRequest: DownloadRequest?
     
     init(_ item: AMGif) {
         gifItem = item
@@ -38,12 +38,12 @@ class AMGifViewModel {
     
     //MARK: - Fetch Data
     func fetchData() {
-        if AMGifCacheManager.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
+        if AMGifCache.shared.existGif(gifItem.id) {
+            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: gifItem.id))
             return
         }
-        if AMGifCacheManager.shared.existThumbnail(gifItem.id) {
-            self.delegate?.giphyModel(self, thumbnail: AMGifCacheManager.shared.thumbnailCache(for: gifItem.id))
+        if AMGifCache.shared.existThumbnail(gifItem.id) {
+            self.delegate?.giphyModel(self, thumbnail: AMGifCache.shared.thumbnailCache(for: gifItem.id))
             fetchGifData()
             return
         }
@@ -59,11 +59,11 @@ class AMGifViewModel {
     
     //MARK: - Pre-fetching methods
     func prefetchData() {
-        if AMGifCacheManager.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGifCacheManager.shared.gifCache(for: gifItem.id))
+        if AMGifCache.shared.existGif(gifItem.id) {
+            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: gifItem.id))
             return
         }
-        if !AMGifCacheManager.shared.existThumbnail(gifItem.id) {
+        if !AMGifCache.shared.existThumbnail(gifItem.id) {
             fetchThumbnail()
         }
     }
@@ -93,7 +93,7 @@ class AMGifViewModel {
                 }
                 
                 if let data = responce.value, let key = self?.gifItem.id {
-                    AMGifCacheManager.shared.cacheThumbnail(data, with: key)
+                    AMGifCache.shared.cacheThumbnail(data, with: key)
                 }
                 
                 self?.delegate?.giphyModelDidEndLoadingThumbnail(self)
@@ -122,7 +122,7 @@ class AMGifViewModel {
                     return
                 }
                 if let data = responce.value, let key = self?.gifItem.id {
-                    AMGifCacheManager.shared.cacheGif(data, with: key, completion: { (success) in
+                    AMGifCache.shared.cacheGif(data, with: key, completion: { (success) in
                         if success {
                             self?.delegate?.giphyModel(self, gifData: data)
                         }
