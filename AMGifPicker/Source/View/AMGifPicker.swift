@@ -30,12 +30,13 @@ class AMGifPicker: UIView {
     
     internal required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        initialize()
+        assertionFailure("User init with configuration")
     }
     
     convenience init(configuration: AMGifPickerConfiguration) {
         self.init(frame: .zero)
         self.configuration = configuration
+        initialize()
     }
     
     private func initialize() {

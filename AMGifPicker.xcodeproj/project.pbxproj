@@ -9,14 +9,14 @@
 /* Begin PBXBuildFile section */
 		06B053EA4691C3BBD3A4F628 /* Pods_AMGifPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 617B9B6D98FF8FB7084A3E61 /* Pods_AMGifPicker.framework */; };
 		1221ABA120114FCD00B72AC9 /* AMGifViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */; };
-		12992CCB200D43BB0054B9E5 /* AMGifCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992CCA200D43BB0054B9E5 /* AMGifCacheManager.swift */; };
+		12992CCB200D43BB0054B9E5 /* AMGifCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992CCA200D43BB0054B9E5 /* AMGifCache.swift */; };
 		12996632201A875E00DB7AFB /* AMGifPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12996631201A875E00DB7AFB /* AMGifPickerModel.swift */; };
 		12A37E8320056AC40052308E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E8220056AC40052308E /* AppDelegate.swift */; };
 		12A37E8520056AC40052308E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E8420056AC40052308E /* ViewController.swift */; };
 		12A37E8820056AC40052308E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12A37E8620056AC40052308E /* Main.storyboard */; };
 		12A37E8A20056AC40052308E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12A37E8920056AC40052308E /* Assets.xcassets */; };
 		12A37E8D20056AC40052308E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12A37E8B20056AC40052308E /* LaunchScreen.storyboard */; };
-		12A37E9A20056AEE0052308E /* AMGifDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9720056AEE0052308E /* AMGifDataProvider.swift */; };
+		12A37E9A20056AEE0052308E /* AMGifDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9720056AEE0052308E /* AMGifDataService.swift */; };
 		12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9920056AEE0052308E /* AMGifPicker.swift */; };
 		12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9C20056F5A0052308E /* AMGifCell.swift */; };
 		12E7806620080D360068C8F7 /* AMGifLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E7806520080D360068C8F7 /* AMGifLayout.swift */; };
@@ -30,7 +30,7 @@
 /* Begin PBXFileReference section */
 		017B845F438077850F824A30 /* Pods-GiphyComponent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiphyComponent.release.xcconfig"; path = "Pods/Target Support Files/Pods-GiphyComponent/Pods-GiphyComponent.release.xcconfig"; sourceTree = "<group>"; };
 		1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifViewModel.swift; sourceTree = "<group>"; };
-		12992CCA200D43BB0054B9E5 /* AMGifCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifCacheManager.swift; sourceTree = "<group>"; };
+		12992CCA200D43BB0054B9E5 /* AMGifCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifCache.swift; sourceTree = "<group>"; };
 		12996631201A875E00DB7AFB /* AMGifPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifPickerModel.swift; sourceTree = "<group>"; };
 		12A37E7F20056AC30052308E /* AMGifPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AMGifPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12A37E8220056AC40052308E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,7 +39,7 @@
 		12A37E8920056AC40052308E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12A37E8C20056AC40052308E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12A37E8E20056AC40052308E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		12A37E9720056AEE0052308E /* AMGifDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifDataProvider.swift; sourceTree = "<group>"; };
+		12A37E9720056AEE0052308E /* AMGifDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifDataService.swift; sourceTree = "<group>"; };
 		12A37E9920056AEE0052308E /* AMGifPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifPicker.swift; sourceTree = "<group>"; };
 		12A37E9C20056F5A0052308E /* AMGifCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifCell.swift; sourceTree = "<group>"; };
 		12E7806520080D360068C8F7 /* AMGifLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifLayout.swift; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				FADDD019201B30FA002A9EA8 /* Extension */,
-				12992CCC200D43D30054B9E5 /* Provider */,
+				12992CCC200D43D30054B9E5 /* Service */,
 				1221AB9F20114ECA00B72AC9 /* Layout */,
 				12992CCD200D43DF0054B9E5 /* Model */,
 				12A37E9820056AEE0052308E /* View */,
@@ -103,13 +103,13 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
-		12992CCC200D43D30054B9E5 /* Provider */ = {
+		12992CCC200D43D30054B9E5 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				12992CCA200D43BB0054B9E5 /* AMGifCacheManager.swift */,
-				12A37E9720056AEE0052308E /* AMGifDataProvider.swift */,
+				12992CCA200D43BB0054B9E5 /* AMGifCache.swift */,
+				12A37E9720056AEE0052308E /* AMGifDataService.swift */,
 			);
-			path = Provider;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		12992CCD200D43DF0054B9E5 /* Model */ = {
@@ -349,10 +349,10 @@
 				12996632201A875E00DB7AFB /* AMGifPickerModel.swift in Sources */,
 				12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */,
 				12E7806620080D360068C8F7 /* AMGifLayout.swift in Sources */,
-				12A37E9A20056AEE0052308E /* AMGifDataProvider.swift in Sources */,
+				12A37E9A20056AEE0052308E /* AMGifDataService.swift in Sources */,
 				12E80AFD20250E2D00EFD852 /* AMGif.swift in Sources */,
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
-				12992CCB200D43BB0054B9E5 /* AMGifCacheManager.swift in Sources */,
+				12992CCB200D43BB0054B9E5 /* AMGifCache.swift in Sources */,
 				12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */,
 				12A37E8320056AC40052308E /* AppDelegate.swift in Sources */,
 				12E80AFB20250E1D00EFD852 /* GPHMedia+Extension.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  AMGifCacheManager.swift
+//  AMGifCache.swift
 //  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 15.01.18.
@@ -9,12 +9,12 @@
 import Foundation
 import Cache
 
-fileprivate let megabyte: UInt = 1024 * 1024
-fileprivate let hour: TimeInterval = 60 * 60
+private let megabyte: UInt = 1024 * 1024
+private let hour: TimeInterval = 60 * 60
 
-class AMGifCacheManager {
+class AMGifCache {
     
-    static let shared = AMGifCacheManager()
+    static let shared = AMGifCache()
     
     private var thumbnailsStorage: Storage!
     private var gifsStorage: Storage!

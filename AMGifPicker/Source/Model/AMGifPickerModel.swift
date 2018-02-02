@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate struct Configuration {
+private struct Configuration {
     static let limit = 40
 }
 
@@ -30,13 +30,13 @@ class AMGifPickerModel {
     private var searchString: String? = nil
     private var isLoading: Bool = false
     
-    private var provider: AMGifDataProvider
+    private var provider: AMGifDataService
     
     init(config: AMGifPickerConfiguration) {
         configuration = config
-        provider = AMGifDataProvider(apiKey: config.apiKey)
+        provider = AMGifDataService(apiKey: config.apiKey)
         
-        AMGifCacheManager.shared.cleanCache()
+        AMGifCache.shared.cleanCache()
         
         loadData()
     }

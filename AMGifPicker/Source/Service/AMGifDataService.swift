@@ -1,5 +1,5 @@
 //
-//  AMGifDataProvider.swift
+//  AMGifDataService.swift
 //  AMGifPicker
 //
 //  Created by Alexander Momotiuk on 09.01.18.
@@ -9,7 +9,7 @@
 import Foundation
 import GiphyCoreSDK
 
-class AMGifDataProvider {
+class AMGifDataService {
     
     private let client: GPHClient
     
