@@ -20,9 +20,9 @@ class AMGifPicker: UIView {
     
     public private(set) var configuration: AMGifPickerConfiguration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
     
-    fileprivate let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
-    fileprivate var model: AMGifPickerModel!
-    fileprivate var isLoading = false
+    private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
+    private var model: AMGifPickerModel!
+    private var isLoading = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,6 @@ class AMGifPicker: UIView {
     convenience init(configuration: AMGifPickerConfiguration) {
         self.init(frame: .zero)
         self.configuration = configuration
-        initialize()
     }
     
     private func initialize() {
@@ -55,6 +54,7 @@ class AMGifPicker: UIView {
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
+        
         if #available(iOS 10.0, *) {
             collectionView.prefetchDataSource = self
         }
@@ -86,6 +86,7 @@ extension AMGifPicker: AMGifPickerModelDelegate {
     
     func modelDidUpdatedData(_ model: AMGifPickerModel) {
         DispatchQueue.main.async {
+            self.collectionView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
             self.collectionView.reloadData()
         }
     }
@@ -110,7 +111,7 @@ extension AMGifPicker: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        model.item(at: indexPath.row)?.stopFetching()
+        //model.item(at: indexPath.row)?.stopFetching()
     }
 }
 
@@ -148,7 +149,7 @@ extension AMGifPicker: AMGifLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, widthForItemAt indexPath: IndexPath, withHeight height: CGFloat) -> CGFloat {
         guard let itemSize = model.item(at: indexPath.row)?.gifItem.size else {
             return 0
-        } 
+        }
         let ratio = height/itemSize.height
         return itemSize.width*ratio
     }
@@ -163,3 +164,4 @@ extension AMGifPicker {
         }
     }
 }
+

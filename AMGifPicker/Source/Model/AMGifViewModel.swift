@@ -27,10 +27,10 @@ class AMGifViewModel {
     
     weak var delegate: AMGifViewModelDelegate?
     
-    let gifItem: AMGif
+    public let gifItem: AMGif
     
-    fileprivate var previewRequest: DownloadRequest?
-    fileprivate var gifRequest: DownloadRequest?
+    private var previewRequest: DownloadRequest?
+    private var gifRequest: DownloadRequest?
     
     init(_ item: AMGif) {
         gifItem = item
@@ -166,3 +166,4 @@ extension AMGifViewModel: Hashable {
         return gifItem.hashValue
     }
 }
+

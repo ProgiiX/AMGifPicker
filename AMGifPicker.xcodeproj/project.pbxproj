@@ -19,8 +19,9 @@
 		12A37E9A20056AEE0052308E /* AMGifDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9720056AEE0052308E /* AMGifDataProvider.swift */; };
 		12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9920056AEE0052308E /* AMGifPicker.swift */; };
 		12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E9C20056F5A0052308E /* AMGifCell.swift */; };
-		12E780642006CF8F0068C8F7 /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E780632006CF8F0068C8F7 /* AMGif.swift */; };
 		12E7806620080D360068C8F7 /* AMGifLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E7806520080D360068C8F7 /* AMGifLayout.swift */; };
+		12E80AFB20250E1D00EFD852 /* GPHMedia+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E80AFA20250E1D00EFD852 /* GPHMedia+Extension.swift */; };
+		12E80AFD20250E2D00EFD852 /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E80AFC20250E2D00EFD852 /* AMGif.swift */; };
 		FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */; };
 		FACA08DC2019FE2B0060A627 /* AMGifProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */; };
 		FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */; };
@@ -41,8 +42,9 @@
 		12A37E9720056AEE0052308E /* AMGifDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifDataProvider.swift; sourceTree = "<group>"; };
 		12A37E9920056AEE0052308E /* AMGifPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifPicker.swift; sourceTree = "<group>"; };
 		12A37E9C20056F5A0052308E /* AMGifCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifCell.swift; sourceTree = "<group>"; };
-		12E780632006CF8F0068C8F7 /* AMGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGif.swift; sourceTree = "<group>"; };
 		12E7806520080D360068C8F7 /* AMGifLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifLayout.swift; sourceTree = "<group>"; };
+		12E80AFA20250E1D00EFD852 /* GPHMedia+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GPHMedia+Extension.swift"; sourceTree = "<group>"; };
+		12E80AFC20250E2D00EFD852 /* AMGif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AMGif.swift; path = ../../../../../Work/cadenceios/ipad_client/Cadence/CommonHelpers/AMGifPicker/Model/AMGif.swift; sourceTree = "<group>"; };
 		195BEE510EA99BF24B30C4ED /* Pods-AMGiphyPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AMGiphyPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AMGiphyPicker/Pods-AMGiphyPicker.release.xcconfig"; sourceTree = "<group>"; };
 		41E4B92012D66A701F49BEC6 /* Pods-AMGifPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AMGifPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AMGifPicker/Pods-AMGifPicker.release.xcconfig"; sourceTree = "<group>"; };
 		4349B166CBAA2E233C116F99 /* Pods_AMGiphyPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AMGiphyPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,7 +115,7 @@
 		12992CCD200D43DF0054B9E5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				12E780632006CF8F0068C8F7 /* AMGif.swift */,
+				12E80AFC20250E2D00EFD852 /* AMGif.swift */,
 				1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */,
 				12996631201A875E00DB7AFB /* AMGifPickerModel.swift */,
 			);
@@ -200,6 +202,7 @@
 		FADDD019201B30FA002A9EA8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				12E80AFA20250E1D00EFD852 /* GPHMedia+Extension.swift */,
 				FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */,
 			);
 			path = Extension;
@@ -344,14 +347,15 @@
 			files = (
 				FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */,
 				12996632201A875E00DB7AFB /* AMGifPickerModel.swift in Sources */,
-				12E780642006CF8F0068C8F7 /* AMGif.swift in Sources */,
 				12A37E9D20056F5A0052308E /* AMGifCell.swift in Sources */,
 				12E7806620080D360068C8F7 /* AMGifLayout.swift in Sources */,
 				12A37E9A20056AEE0052308E /* AMGifDataProvider.swift in Sources */,
+				12E80AFD20250E2D00EFD852 /* AMGif.swift in Sources */,
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
 				12992CCB200D43BB0054B9E5 /* AMGifCacheManager.swift in Sources */,
 				12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */,
 				12A37E8320056AC40052308E /* AppDelegate.swift in Sources */,
+				12E80AFB20250E1D00EFD852 /* GPHMedia+Extension.swift in Sources */,
 				FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */,
 				1221ABA120114FCD00B72AC9 /* AMGifViewModel.swift in Sources */,
 				FACA08DC2019FE2B0060A627 /* AMGifProgress.swift in Sources */,
