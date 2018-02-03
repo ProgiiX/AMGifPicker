@@ -10,6 +10,7 @@ import Foundation
 
 enum AMGifPickerScrollDirection {
     case horizontal
+    case vertical
 }
 
 struct AMGifPickerConfiguration {

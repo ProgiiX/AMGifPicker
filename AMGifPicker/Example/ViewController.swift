@@ -21,7 +21,7 @@ class ViewController: UIViewController, AMGifPickerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let configuration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6")
+        let configuration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6", direction: .vertical)
         gifView = AMGifPicker(configuration: configuration)
         view.addSubview(gifView)
         gifView.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +29,7 @@ class ViewController: UIViewController, AMGifPickerDelegate {
         gifView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         gifView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         gifView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        gifView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        gifView.heightAnchor.constraint(equalToConstant: 600).isActive = true
         
         gifView.delegate = self
     }

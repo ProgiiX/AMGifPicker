@@ -19,8 +19,7 @@ class AMGifPicker: UIView {
     weak var delegate: AMGifPickerDelegate?
     
     public private(set) var configuration: AMGifPickerConfiguration!
-    
-    private let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: AMGifLayout())
+    private var collectionView: UICollectionView!
     private var model: AMGifPickerModel!
     private var isLoading = false
     
@@ -48,9 +47,10 @@ class AMGifPicker: UIView {
     
     //MARK: - Layout
     private func setupCollectionView() {
+        let layout = configuration.scrollDirection == .horizontal ? AMGifHorizontalLayout() : AMGifVerticalLayout()
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        (collectionView.collectionViewLayout as? AMGifBaseLayout)?.delegate = self
         addSubview(collectionView)
-        (collectionView.collectionViewLayout as! AMGifLayout).delegate = self
-        
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -111,7 +111,7 @@ extension AMGifPicker: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //model.item(at: indexPath.row)?.stopFetching()
+        model.item(at: indexPath.row)?.stopFetching()
     }
 }
 
@@ -140,7 +140,7 @@ extension AMGifPicker: UICollectionViewDelegate {
     }
 }
 
-extension AMGifPicker: AMGifLayoutDelegate {
+extension AMGifPicker: AMGifHorizontalLayoutDelegate {
     
     func numberOfRows(_ collectionView: UICollectionView) -> Int {
         return configuration.numberRows
@@ -152,6 +152,21 @@ extension AMGifPicker: AMGifLayoutDelegate {
         }
         let ratio = height/itemSize.height
         return itemSize.width*ratio
+    }
+}
+
+extension AMGifPicker: AMGifVerticalLayoutDelegate {
+    
+    func numberOfColumns(_ collectionView: UICollectionView) -> Int {
+        return configuration.numberRows
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, heightForItemAt indexPath: IndexPath, withWidth width: CGFloat) -> CGFloat {
+        guard let itemSize = model.item(at: indexPath.row)?.gifItem.size else {
+            return 0
+        }
+        let ratio = width/itemSize.width
+        return itemSize.height*ratio
     }
 }
 
