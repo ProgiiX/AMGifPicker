@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'AMGifPicker'
-  s.version          = '0.1.2'
+  s.version          = '0.1.4'
   s.summary          = 'Gif picker component'
  
   s.description      = <<-DESC
