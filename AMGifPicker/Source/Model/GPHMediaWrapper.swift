@@ -1,15 +1,25 @@
 //
-//  GPHMedia+Extension.swift
+//  GPHMediaWrapper.swift
 //  AMGifPicker
 //
-//  Created by Alexander Momotiuk on 02.02.18.
+//  Created by Alexander Momotiuk on 2/15/18.
 //  Copyright © 2018 Alexander Momotiuk. All rights reserved.
 //
 
 import Foundation
 import GiphyCoreSDK
 
-extension GPHMedia {
+fileprivate struct Constants {
+    static let defaultHeight = 100
+    static let defaultWidth = 100
+}
+
+
+extension GPHMedia: AMGifWrapper {
+    
+    var key: String {
+        return id
+    }
     
     var thumbnailUrl: String {
         if let url = images?.fixedHeightSmallStill?.gifUrl, url.count > 0 {
@@ -43,7 +53,7 @@ extension GPHMedia {
         return images?.original?.gifUrl ?? ""
     }
     
-    var gifSize: CGSize {
+    var size: CGSize {
         if let height = images?.fixedHeightSmall?.height, let width = images?.fixedHeightSmall?.width, height > 0, width > 0 {
             return CGSize(width: width, height: height)
         }
@@ -61,5 +71,4 @@ extension GPHMedia {
         }
         return CGSize(width: 100, height: 100)
     }
-    
 }

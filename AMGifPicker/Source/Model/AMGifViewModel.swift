@@ -27,7 +27,7 @@ class AMGifViewModel {
     
     weak var delegate: AMGifViewModelDelegate?
     
-    public let gifItem: AMGif
+    public let gifItem: AMGifWrapper
     public var expiryTime: Double = 60*60
     private var previewRequest: DownloadRequest?
     private var gifRequest: DownloadRequest?
@@ -36,7 +36,7 @@ class AMGifViewModel {
         return "\(gifItem.gifUrl.hash)"
     }
     
-    init(_ item: AMGif) {
+    init(_ item: AMGifWrapper) {
         gifItem = item
     }
     
@@ -151,10 +151,10 @@ class AMGifViewModel {
 extension AMGifViewModel: Hashable {
     
     static func ==(lhs: AMGifViewModel, rhs: AMGifViewModel) -> Bool {
-        return lhs.gifItem.id == rhs.gifItem.id
+        return lhs.gifItem.key == rhs.gifItem.key
     }
     
     var hashValue: Int {
-        return gifItem.hashValue
+        return gifItem.key.hashValue
     }
 }

@@ -11,7 +11,7 @@ import GiphyCoreSDK
 
 protocol AMGifPickerDelegate: class {
     
-    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif)
+    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGifWrapper)
 }
 
 class AMGifPicker: UIView {

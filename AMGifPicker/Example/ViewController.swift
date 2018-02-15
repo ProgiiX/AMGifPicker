@@ -10,11 +10,10 @@ import UIKit
 
 class ViewController: UIViewController, AMGifPickerDelegate {
     
-    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif) {
-        print(gif.id)
+    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGifWrapper) {
+        print(gif.key)
     }
     
-
     var gifView: AMGifPicker!
     
     @IBOutlet weak var searchField: UITextField!

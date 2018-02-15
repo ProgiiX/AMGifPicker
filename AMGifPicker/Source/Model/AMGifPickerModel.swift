@@ -56,7 +56,7 @@ extension AMGifPickerModel {
         }
     }
     
-    private func appendTrending(_ gifs: [AMGif]) {
+    private func appendTrending(_ gifs: [AMGifWrapper]) {
         let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
         self.trendingGifs.append(contentsOf: gifsViewModel)
     }
