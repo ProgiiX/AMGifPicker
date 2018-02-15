@@ -25,6 +25,7 @@
 		12E80AFB20250E1D00EFD852 /* GPHMedia+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E80AFA20250E1D00EFD852 /* GPHMedia+Extension.swift */; };
 		FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */; };
 		FA7784192028929E00881D34 /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7784182028929E00881D34 /* AMGif.swift */; };
+		FA9630D32035A88B002C593F /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9630D22035A88B002C593F /* FileManager+Extension.swift */; };
 		FACA08DC2019FE2B0060A627 /* AMGifProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */; };
 		FADDD018201B30F5002A9EA8 /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		DE220C237747AE12F89AFC4A /* Pods-AMGifPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AMGifPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AMGifPicker/Pods-AMGifPicker.debug.xcconfig"; sourceTree = "<group>"; };
 		FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifPickerConfiguration.swift; sourceTree = "<group>"; };
 		FA7784182028929E00881D34 /* AMGif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGif.swift; sourceTree = "<group>"; };
+		FA9630D22035A88B002C593F /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		FACA08DB2019FE2B0060A627 /* AMGifProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifProgress.swift; sourceTree = "<group>"; };
 		FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSet+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -210,6 +212,7 @@
 			children = (
 				12E80AFA20250E1D00EFD852 /* GPHMedia+Extension.swift */,
 				FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */,
+				FA9630D22035A88B002C593F /* FileManager+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
 				12992CCB200D43BB0054B9E5 /* AMGifCache.swift in Sources */,
 				12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */,
+				FA9630D32035A88B002C593F /* FileManager+Extension.swift in Sources */,
 				12A37E8320056AC40052308E /* AppDelegate.swift in Sources */,
 				12E80AFB20250E1D00EFD852 /* GPHMedia+Extension.swift in Sources */,
 				FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */,
