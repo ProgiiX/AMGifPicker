@@ -17,21 +17,21 @@ fileprivate struct Constants {
 class AMGif {
     
     let id: String
-    let thumbnailUrl: String?
-    let gifUrl: String?
+    let thumbnailUrl: String
+    let gifUrl: String
     let size: CGSize
     
     init(_ giphy: GPHMedia) {
         self.id = giphy.id
-        self.thumbnailUrl = giphy.images?.fixedHeightSmallStill?.gifUrl ?? giphy.images?.fixedWidthSmallStill?.gifUrl
-        self.gifUrl = giphy.images?.fixedHeightSmall?.gifUrl ?? giphy.images?.fixedWidthSmall?.gifUrl
+        self.thumbnailUrl = giphy.thumbnailUrl
+        self.gifUrl = giphy.gifUrl
         
         let width = giphy.images?.fixedHeightSmall?.width ?? giphy.images?.fixedWidthSmall?.width ?? Constants.defaultWidth
         let height = giphy.images?.fixedHeightSmall?.height ?? giphy.images?.fixedWidthSmall?.height ?? Constants.defaultHeight
         self.size = CGSize(width: width, height: height)
     }
     
-    init(_ id: String, thumbnail: String?, gif: String?, size: CGSize) {
+    init(_ id: String, thumbnail: String, gif: String, size: CGSize) {
         self.id = id
         self.thumbnailUrl = thumbnail
         self.gifUrl = gif

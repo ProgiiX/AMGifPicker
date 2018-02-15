@@ -28,9 +28,13 @@ class AMGifViewModel {
     weak var delegate: AMGifViewModelDelegate?
     
     public let gifItem: AMGif
-    
+    public var expiryTime: Double = 60*60
     private var previewRequest: DownloadRequest?
     private var gifRequest: DownloadRequest?
+    
+    private var cacheUid: String {
+        return "\(gifItem.gifUrl.hash)"
+    }
     
     init(_ item: AMGif) {
         gifItem = item
@@ -38,12 +42,12 @@ class AMGifViewModel {
     
     //MARK: - Fetch Data
     func fetchData() {
-        if AMGifCache.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: gifItem.id))
+        if AMGifCache.shared.existGif(cacheUid) {
+            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: cacheUid))
             return
         }
-        if AMGifCache.shared.existThumbnail(gifItem.id) {
-            self.delegate?.giphyModel(self, thumbnail: AMGifCache.shared.thumbnailCache(for: gifItem.id))
+        if AMGifCache.shared.existThumbnail(cacheUid) {
+            self.delegate?.giphyModel(self, thumbnail: AMGifCache.shared.thumbnailCache(for: cacheUid))
             fetchGifData()
             return
         }
@@ -59,11 +63,11 @@ class AMGifViewModel {
     
     //MARK: - Pre-fetching methods
     func prefetchData() {
-        if AMGifCache.shared.existGif(gifItem.id) {
-            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: gifItem.id))
+        if AMGifCache.shared.existGif(cacheUid) {
+            self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: cacheUid))
             return
         }
-        if !AMGifCache.shared.existThumbnail(gifItem.id) {
+        if !AMGifCache.shared.existThumbnail(cacheUid) {
             fetchThumbnail()
         }
     }
@@ -85,21 +89,25 @@ class AMGifViewModel {
         if previewRequest != nil, let suspend = previewRequest?.delegate.queue.isSuspended, suspend, previewRequest?.delegate == nil {
             self.previewRequest?.resume()
         } else {
-            self.previewRequest = Alamofire.download(self.gifItem.thumbnailUrl ?? "", to: self.destionation(self.gifItem.id + "_thumbnail"))
+            self.previewRequest = Alamofire.download(gifItem.thumbnailUrl, to: FileManager.tempCacheDestination(cacheUid + "_thumbnail"))
             self.previewRequest?.responseData(completionHandler: {[weak self] (responce) in
                 if responce.error != nil {
                     self?.previewRequest = nil
                     return
                 }
                 
-                if let data = responce.value, let key = self?.gifItem.id {
-                    AMGifCache.shared.cacheThumbnail(data, with: key)
+                if let data = responce.value, data.count > 0, let strongSelf = self {
+                    AMGifCache.shared.cacheThumbnail(data, with: strongSelf.cacheUid, expiry: strongSelf.expiryTime, completion: { (success) in
+                        if success {
+                            DispatchQueue.main.async {
+                                self?.delegate?.giphyModelDidEndLoadingThumbnail(self)
+                                self?.delegate?.giphyModel(self, thumbnail: responce.value)
+                            }
+                        }
+                    })
                 }
                 
-                self?.delegate?.giphyModelDidEndLoadingThumbnail(self)
-                
-                self?.delegate?.giphyModel(self, thumbnail: responce.value)
-                self?.removeTemporaryCache(responce.destinationURL)
+                FileManager.removeTempCache(file: responce.destinationURL)
                 self?.previewRequest = nil
                 
                 if let callback = completion {
@@ -115,43 +123,27 @@ class AMGifViewModel {
         if gifRequest != nil, let suspend = gifRequest?.delegate.queue.isSuspended, suspend, gifRequest?.delegate == nil {
             self.gifRequest?.resume()
         } else {
-            self.gifRequest = Alamofire.download(self.gifItem.gifUrl ?? "", to: self.destionation(self.gifItem.id))
+            self.gifRequest = Alamofire.download(gifItem.gifUrl, to: FileManager.tempCacheDestination(cacheUid))
             self.gifRequest?.responseData(completionHandler: {[weak self] (responce) in
                 if responce.error != nil {
                     self?.gifRequest = nil
                     return
                 }
-                if let data = responce.value, let key = self?.gifItem.id {
-                    AMGifCache.shared.cacheGif(data, with: key, completion: { (success) in
+                if let data = responce.value, data.count > 0, let strongSelf = self {
+                    AMGifCache.shared.cacheGif(data, with: strongSelf.cacheUid, expiry: strongSelf.expiryTime, completion: { (success) in
                         if success {
-                            self?.delegate?.giphyModel(self, gifData: data)
+                            DispatchQueue.main.async {
+                                self?.delegate?.giphyModel(self, gifData: data)
+                            }
                         }
                     })
                 }
-                self?.removeTemporaryCache(responce.destinationURL)
+                FileManager.removeTempCache(file: responce.destinationURL)
                 self?.gifRequest = nil
             })
             self.gifRequest?.downloadProgress(queue: DispatchQueue.main, closure: {[weak self] (progress) in
                 self?.delegate?.giphyModel(self, gifProgress: CGFloat(progress.fractionCompleted))
             })
-        }
-    }
-    
-    private func removeTemporaryCache(_ url: URL?) {
-        guard let temporaryURL = url else {
-            return
-        }
-        try? FileManager.default.removeItem(at: temporaryURL)
-    }
-    
-    private func destionation(_ name: String) -> DownloadRequest.DownloadFileDestination {
-        return { _, _ in
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let documentsURL = URL(fileURLWithPath: documentsPath + "/giphy-temporary-cache", isDirectory: true)
-            let fileURL = documentsURL.appendingPathComponent(name)
-            _ = try? FileManager.default.createDirectory(at: documentsURL, withIntermediateDirectories: true, attributes: nil)
-            
-            return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
     }
 }

@@ -27,8 +27,8 @@ class AMGifCache {
     }
     
     private func initStorage(_ url: URL) {
-        let thumbnailsMemoryConfig = DiskConfig(name: "thumbnails", expiry: .seconds(hour), maxSize: megabyte * 10, directory: url, protectionType: nil)
-        let gifsMemoryConfig = DiskConfig(name: "gifs", expiry: .seconds(hour), maxSize: megabyte * 100, directory: url, protectionType: nil)
+        let thumbnailsMemoryConfig = DiskConfig(name: "thumbnails", expiry: .never, maxSize: megabyte * 40, directory: url, protectionType: nil)
+        let gifsMemoryConfig = DiskConfig(name: "gifs", expiry: .never, maxSize: megabyte * 300, directory: url, protectionType: nil)
         
         thumbnailsStorage = try! Storage(diskConfig: thumbnailsMemoryConfig)
         gifsStorage = try! Storage(diskConfig: gifsMemoryConfig)
@@ -37,12 +37,27 @@ class AMGifCache {
         try? gifsStorage.removeExpiredObjects()
     }
     
-    func cacheThumbnail(_ data: Data, with key: String) {
-        thumbnailsStorage.async.setObject(data, forKey: key + "_thumbnail") { (result) in }
+    func cacheThumbnail(_ data: Data, with key: String, completion: @escaping (Bool) -> Void) {
+        cacheThumbnail(data, with: key, expiry: hour, completion: completion)
     }
     
     func cacheGif(_ data: Data, with key: String, completion: @escaping (Bool) -> Void) {
-        gifsStorage.async.setObject(data, forKey: key) { (result) in
+        cacheGif(data, with: key, expiry: hour, completion: completion)
+    }
+    
+    func cacheThumbnail(_ data: Data, with key: String, expiry: Double, completion: @escaping (Bool) -> Void) {
+        thumbnailsStorage.async.setObject(data, forKey: key + "_thumbnail" , expiry: .seconds(expiry)) { (result) in
+            switch result {
+            case .value(_):
+                completion(true)
+            case .error(_):
+                completion(false)
+            }
+        }
+    }
+    
+    func cacheGif(_ data: Data, with key: String, expiry: Double, completion: @escaping (Bool) -> Void) {
+        gifsStorage.async.setObject(data, forKey: key, expiry: .seconds(expiry)) { (result) in
             switch result {
             case .value(_):
                 completion(true)
