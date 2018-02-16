@@ -8,22 +8,22 @@
 
 import Foundation
 
-enum AMGifPickerScrollDirection {
+public enum AMGifPickerScrollDirection {
     case horizontal
     case vertical
 }
 
-struct AMGifPickerConfiguration {
+public struct AMGifPickerConfiguration {
     
-    let apiKey: String
-    let numberRows: Int
-    let scrollDirection: AMGifPickerScrollDirection
+    public let apiKey: String
+    public let numberRows: Int
+    public let scrollDirection: AMGifPickerScrollDirection
     
     // Maximum gifs for one search string
-    let maxLoadCount: Int
-    let dataQuality: AMGifQuality
+    public let maxLoadCount: Int
+    public let dataQuality: AMGifQuality
     
-    init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, quality: AMGifQuality = .veryLow, maxCount: Int = 200) {
+    public init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, quality: AMGifQuality = .veryLow, maxCount: Int = 200) {
         apiKey = key
         numberRows = rows
         scrollDirection = direction

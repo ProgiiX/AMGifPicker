@@ -16,11 +16,11 @@ fileprivate struct Constants {
 
 extension GPHMedia: AMGifWrapper {
 
-    var key: String {
+    public var key: String {
         return id
     }
     
-    func possibleQuality(preferred quality: AMGifQuality) -> AMGifQuality {
+    public func possibleQuality(preferred quality: AMGifQuality) -> AMGifQuality {
         switch quality {
         case .veryLow:
             if let url = images?.fixedHeightSmall?.gifUrl, url.count > 0
@@ -47,7 +47,7 @@ extension GPHMedia: AMGifWrapper {
         }
     }
     
-    func gifUrl(with quality: AMGifQuality) -> String {
+    public func gifUrl(with quality: AMGifQuality) -> String {
         switch quality {
         case .veryLow:
             if let url = images?.fixedHeightSmall?.gifUrl, url.count > 0
@@ -74,7 +74,7 @@ extension GPHMedia: AMGifWrapper {
         }
     }
     
-    func thumbnailUrl(with quality: AMGifQuality) -> String {
+    public func thumbnailUrl(with quality: AMGifQuality) -> String {
         switch quality {
         case .veryLow:
             if let url = images?.fixedHeightSmallStill?.gifUrl, url.count > 0
@@ -93,7 +93,7 @@ extension GPHMedia: AMGifWrapper {
         }
     }
     
-    func size(with quality: AMGifQuality) -> CGSize {
+    public func size(with quality: AMGifQuality) -> CGSize {
         switch quality {
         case .veryLow:
             if let height = images?.fixedHeightSmall?.height, let width = images?.fixedHeightSmall?.width, height > 0, width > 0

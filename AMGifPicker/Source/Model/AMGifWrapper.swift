@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AMGifWrapper {
+public protocol AMGifWrapper {
     
     var key: String { get }
     

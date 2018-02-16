@@ -8,8 +8,7 @@
 
 import Foundation
 
-enum AMGifQuality {
-    
+public enum AMGifQuality {
     case veryLow
     case low
     case medium

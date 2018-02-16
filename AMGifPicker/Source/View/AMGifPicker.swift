@@ -9,14 +9,14 @@
 import UIKit
 import GiphyCoreSDK
 
-protocol AMGifPickerDelegate: class {
+public protocol AMGifPickerDelegate: class {
     
     func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif)
 }
 
-class AMGifPicker: UIView {
+public class AMGifPicker: UIView {
     
-    weak var delegate: AMGifPickerDelegate?
+    public weak var delegate: AMGifPickerDelegate?
     
     public private(set) var configuration: AMGifPickerConfiguration!
     private var collectionView: UICollectionView!
@@ -27,12 +27,12 @@ class AMGifPicker: UIView {
         super.init(frame: frame)
     }
     
-    internal required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         assertionFailure("User init with configuration")
     }
     
-    convenience init(configuration: AMGifPickerConfiguration) {
+    public convenience init(configuration: AMGifPickerConfiguration) {
         self.init(frame: .zero)
         self.configuration = configuration
         initialize()
@@ -63,13 +63,13 @@ class AMGifPicker: UIView {
         collectionView.reloadData()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         collectionView.frame = bounds
     }
     
     //MARK: - Public Methods
-    func search(_ text: String?) {
+    public func search(_ text: String?) {
         model.search(text)
     }
 }
@@ -94,15 +94,15 @@ extension AMGifPicker: AMGifPickerModelDelegate {
 
 extension AMGifPicker: UICollectionViewDataSource {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return model.numberOfItems()
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AMGifCell.self), for: indexPath) as! AMGifCell
         if let item = model.item(at: indexPath.row) {
             cell.setupWith(item)
@@ -110,20 +110,26 @@ extension AMGifPicker: UICollectionViewDataSource {
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         model.item(at: indexPath.row)?.stopFetching()
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item - model.numberOfItems() < 10 {
+            model.loadNext()
+        }
     }
 }
 
 extension AMGifPicker: UICollectionViewDataSourcePrefetching {
     
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             model.item(at: indexPath.row)?.prefetchData()
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+    public func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             model.item(at: indexPath.row)?.cancelPrefecth()
         }
@@ -132,7 +138,7 @@ extension AMGifPicker: UICollectionViewDataSourcePrefetching {
 
 extension AMGifPicker: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = model.item(at: indexPath.row) else {
             return
         }
@@ -169,14 +175,3 @@ extension AMGifPicker: AMGifVerticalLayoutDelegate {
         return itemSize.height*ratio
     }
 }
-
-//MARK: - UIScrollView Delegate
-extension AMGifPicker {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.contentOffset.x + collectionView.bounds.width + 100 > collectionView.contentSize.width {
-            model.loadNext()
-        }
-    }
-}
-

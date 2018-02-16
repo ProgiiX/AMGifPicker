@@ -9,32 +9,32 @@
 import UIKit
 import GiphyCoreSDK
 
-class AMGif {
+public final class AMGif {
     
     private let gif: AMGifWrapper
     public private(set) var quality: AMGifQuality
     
-    init(_ gif: AMGifWrapper, preferred quality: AMGifQuality) {
+    public init(_ gif: AMGifWrapper, preferred quality: AMGifQuality) {
         self.gif = gif
         self.quality = gif.possibleQuality(preferred: quality)
     }
     
-    var key: String {
+    public var key: String {
         return gif.key
     }
     
-    var gifUrl: String {
+    public var gifUrl: String {
         return gif.gifUrl(with: quality)
     }
     
-    var thumbnailUrl: String {
+    public var thumbnailUrl: String {
         return gif.thumbnailUrl(with: quality)
     }
-    var size: CGSize {
+    public var size: CGSize {
         return gif.size(with: quality)
     }
     
-    func translate(preferred quality: AMGifQuality) -> AMGif {
+    public func translate(preferred quality: AMGifQuality) -> AMGif {
         return AMGif(gif, preferred: quality)
     }
 }

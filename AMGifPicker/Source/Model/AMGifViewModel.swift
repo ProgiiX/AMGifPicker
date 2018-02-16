@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import Cache
 
-protocol AMGifViewModelDelegate: class {
+public protocol AMGifViewModelDelegate: class {
     
     func giphyModelDidBeginLoadingThumbnail(_ item: AMGifViewModel?)
     func giphyModelDidEndLoadingThumbnail(_ item: AMGifViewModel?)
@@ -23,9 +23,9 @@ protocol AMGifViewModelDelegate: class {
     func giphyModel(_ item: AMGifViewModel?, gifProgress progress: CGFloat)
 }
 
-class AMGifViewModel {
+public class AMGifViewModel {
     
-    weak var delegate: AMGifViewModelDelegate?
+    public weak var delegate: AMGifViewModelDelegate?
     
     public let gifItem: AMGif
     public var expiryTime: Double = 60*60
@@ -36,12 +36,12 @@ class AMGifViewModel {
         return "\(gifItem.gifUrl.hash)"
     }
     
-    init(_ item: AMGif) {
+    public init(_ item: AMGif) {
         gifItem = item
     }
     
     //MARK: - Fetch Data
-    func fetchData() {
+    public func fetchData() {
         if AMGifCache.shared.existGif(cacheUid) {
             self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: cacheUid))
             return
@@ -56,13 +56,13 @@ class AMGifViewModel {
         })
     }
     
-    func stopFetching() {
+    public func stopFetching() {
         previewRequest?.suspend()
         gifRequest?.suspend()
     }
     
     //MARK: - Pre-fetching methods
-    func prefetchData() {
+    public func prefetchData() {
         if AMGifCache.shared.existGif(cacheUid) {
             self.delegate?.giphyModel(self, gifData: AMGifCache.shared.gifCache(for: cacheUid))
             return
@@ -72,12 +72,12 @@ class AMGifViewModel {
         }
     }
     
-    func cancelPrefecth() {
+    public func cancelPrefecth() {
         previewRequest?.suspend()
     }
     
     //MARK: - Cancel
-    func cancelFetching() {
+    public func cancelFetching() {
         previewRequest?.cancel()
         gifRequest?.cancel()
     }
@@ -150,11 +150,11 @@ class AMGifViewModel {
 
 extension AMGifViewModel: Hashable {
     
-    static func ==(lhs: AMGifViewModel, rhs: AMGifViewModel) -> Bool {
+    public static func ==(lhs: AMGifViewModel, rhs: AMGifViewModel) -> Bool {
         return lhs.gifItem.key == rhs.gifItem.key
     }
     
-    var hashValue: Int {
+    public var hashValue: Int {
         return gifItem.key.hashValue
     }
 }
