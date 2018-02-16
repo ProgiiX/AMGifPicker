@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GiphyCoreSDK
 
 private struct Configuration {
     static let limit = 40
@@ -56,8 +57,11 @@ extension AMGifPickerModel {
         }
     }
     
-    private func appendTrending(_ gifs: [AMGif]) {
-        let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
+    private func appendTrending(_ gifs: [GPHMedia]) {
+        let gifsViewModel = gifs.map { (media) -> AMGifViewModel in
+            let model = AMGif(media, preferred: configuration.dataQuality)
+            return AMGifViewModel(model)
+        }
         self.trendingGifs.append(contentsOf: gifsViewModel)
     }
     
@@ -69,7 +73,10 @@ extension AMGifPickerModel {
                 delegate?.modelDidUpdatedData(self)
                 provider.loadGiphy(newSearch, offset: 0, limit: Configuration.limit, completion: {[weak self] (newGifs) in
                     guard let gifs = newGifs, let strongSelf = self else { return }
-                    let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
+                    let gifsViewModel = gifs.map { (media) -> AMGifViewModel in
+                        let model = AMGif(media, preferred: strongSelf.configuration.dataQuality)
+                        return AMGifViewModel(model)
+                    }
                     strongSelf.searchGifs = gifsViewModel
                     strongSelf.delegate?.modelDidUpdatedData(strongSelf)
                 })
@@ -94,7 +101,10 @@ extension AMGifPickerModel {
             let limit = configuration.maxLoadCount - searchGifs.count > Configuration.limit ? Configuration.limit : configuration.maxLoadCount - searchGifs.count
             provider.loadGiphy(search, offset: searchGifs.count, limit: limit, completion: {[weak self] (newGifs) in
                 guard let gifs = newGifs, let strongSelf = self else { return }
-                let gifsViewModel = gifs.map { return AMGifViewModel.init($0) }
+                let gifsViewModel = gifs.map { (media) -> AMGifViewModel in
+                    let model = AMGif(media, preferred: strongSelf.configuration.dataQuality)
+                    return AMGifViewModel(model)
+                }
                 strongSelf.searchGifs.append(contentsOf: gifsViewModel)
                 strongSelf.delegate?.modelDidUpdatedData(strongSelf)
             })

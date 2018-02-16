@@ -151,10 +151,10 @@ class AMGifViewModel {
 extension AMGifViewModel: Hashable {
     
     static func ==(lhs: AMGifViewModel, rhs: AMGifViewModel) -> Bool {
-        return lhs.gifItem.id == rhs.gifItem.id
+        return lhs.gifItem.key == rhs.gifItem.key
     }
     
     var hashValue: Int {
-        return gifItem.hashValue
+        return gifItem.key.hashValue
     }
 }
