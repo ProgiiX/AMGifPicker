@@ -66,7 +66,7 @@ extension AMGifPickerModel {
     }
     
     func search(_ search: String?) {
-        if let newSearch = search {
+        if let newSearch = search, newSearch.count > 0 {
             if newSearch != searchString {
                 searchString = newSearch
                 self.searchGifs = []
