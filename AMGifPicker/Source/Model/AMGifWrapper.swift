@@ -11,9 +11,11 @@ import UIKit
 protocol AMGifWrapper {
     
     var key: String { get }
-    var thumbnailUrl: String { get }
-    var gifUrl: String { get }
-    var size: CGSize { get }
+    
+    func possibleQuality(preferred quality: AMGifQuality) -> AMGifQuality
+    func gifUrl(with quality: AMGifQuality) -> String
+    func thumbnailUrl(with quality: AMGifQuality) -> String
+    func size(with quality: AMGifQuality) -> CGSize
 }
 
 

@@ -27,7 +27,7 @@ class AMGifViewModel {
     
     weak var delegate: AMGifViewModelDelegate?
     
-    public let gifItem: AMGifWrapper
+    public let gifItem: AMGif
     public var expiryTime: Double = 60*60
     private var previewRequest: DownloadRequest?
     private var gifRequest: DownloadRequest?
@@ -36,7 +36,7 @@ class AMGifViewModel {
         return "\(gifItem.gifUrl.hash)"
     }
     
-    init(_ item: AMGifWrapper) {
+    init(_ item: AMGif) {
         gifItem = item
     }
     

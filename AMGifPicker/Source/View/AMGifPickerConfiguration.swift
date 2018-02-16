@@ -21,11 +21,13 @@ struct AMGifPickerConfiguration {
     
     // Maximum gifs for one search string
     let maxLoadCount: Int
+    let dataQuality: AMGifQuality
     
-    init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, maxCount: Int = 200) {
+    init(apiKey key: String, rows: Int = 2, direction: AMGifPickerScrollDirection = .horizontal, quality: AMGifQuality = .veryLow, maxCount: Int = 200) {
         apiKey = key
         numberRows = rows
         scrollDirection = direction
         maxLoadCount = maxCount
+        dataQuality = quality
     }
 }

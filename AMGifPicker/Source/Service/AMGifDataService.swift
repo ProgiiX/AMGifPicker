@@ -20,7 +20,7 @@ class AMGifDataService {
         self.client = GPHClient(apiKey: key)
     }
     
-    func loadGiphy(_ search: String? = nil, offset: Int = 0, limit: Int, completion: @escaping (_ data: [AMGifWrapper]?) -> Void) {
+    func loadGiphy(_ search: String? = nil, offset: Int = 0, limit: Int, completion: @escaping (_ data: [GPHMedia]?) -> Void) {
         // Search
         if let search = search {
             getSearchGifs(search, offset: offset, limit: limit, completion: { (items) in
@@ -35,27 +35,25 @@ class AMGifDataService {
         }
     }
     
-    private func getSearchGifs(_ search: String, offset: Int, limit: Int, completion: @escaping (_ data: [AMGifWrapper]?) -> Void) {
+    private func getSearchGifs(_ search: String, offset: Int, limit: Int, completion: @escaping (_ data: [GPHMedia]?) -> Void) {
         searchLoadingOperation?.cancel()
         searchLoadingOperation = client.search(search, offset: offset, limit: limit, completionHandler: { (responce, error) in
             guard let responceItems = responce?.data else {
                 completion(nil)
                 return
             }
-            let gifs: [AMGifWrapper] = responceItems
-            completion(gifs)
+            completion(responceItems)
         })
     }
     
-    private func getTrendingGifs(offset: Int, limit: Int, completion: @escaping (_ data: [AMGifWrapper]?) -> Void) {
+    private func getTrendingGifs(offset: Int, limit: Int, completion: @escaping (_ data: [GPHMedia]?) -> Void) {
         trendingLoadingOperation?.cancel()
         trendingLoadingOperation = client.trending(offset: offset, limit: limit) { (responce, error) in
             guard let responceItems = responce?.data else {
                 completion(nil)
                 return
             }
-            let gifs: [AMGifWrapper] = responceItems
-            completion(gifs)
+            completion(responceItems)
         }
     }
 }

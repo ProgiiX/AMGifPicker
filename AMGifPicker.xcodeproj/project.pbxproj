@@ -22,6 +22,8 @@
 		12AFB18E2025FFE500E48991 /* AMGifBaseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFB18D2025FFE500E48991 /* AMGifBaseLayout.swift */; };
 		12AFB190202600E300E48991 /* AMGifVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFB18F202600E300E48991 /* AMGifVerticalLayout.swift */; };
 		12E7806620080D360068C8F7 /* AMGifHorizontalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E7806520080D360068C8F7 /* AMGifHorizontalLayout.swift */; };
+		FA0A1CA92036DB8D00E8D193 /* AMGifQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A1CA82036DB8D00E8D193 /* AMGifQuality.swift */; };
+		FA0A1CAB2036E5AE00E8D193 /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A1CAA2036E5AE00E8D193 /* AMGif.swift */; };
 		FA32734D2035E60000D0E255 /* GPHMediaWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32734C2035E60000D0E255 /* GPHMediaWrapper.swift */; };
 		FA478C3420177EE300D2FAD3 /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */; };
 		FA7784192028929E00881D34 /* AMGifWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7784182028929E00881D34 /* AMGifWrapper.swift */; };
@@ -56,6 +58,8 @@
 		617B9B6D98FF8FB7084A3E61 /* Pods_AMGifPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AMGifPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647590E82FF6C68ABFD8F6E2 /* Pods_GiphyComponent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GiphyComponent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE220C237747AE12F89AFC4A /* Pods-AMGifPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AMGifPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AMGifPicker/Pods-AMGifPicker.debug.xcconfig"; sourceTree = "<group>"; };
+		FA0A1CA82036DB8D00E8D193 /* AMGifQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifQuality.swift; sourceTree = "<group>"; };
+		FA0A1CAA2036E5AE00E8D193 /* AMGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGif.swift; sourceTree = "<group>"; };
 		FA32734C2035E60000D0E255 /* GPHMediaWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPHMediaWrapper.swift; sourceTree = "<group>"; };
 		FA478C3320177EE300D2FAD3 /* AMGifPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifPickerConfiguration.swift; sourceTree = "<group>"; };
 		FA7784182028929E00881D34 /* AMGifWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifWrapper.swift; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 		12992CCD200D43DF0054B9E5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FA0A1CAA2036E5AE00E8D193 /* AMGif.swift */,
+				FA0A1CA82036DB8D00E8D193 /* AMGifQuality.swift */,
 				FA7784182028929E00881D34 /* AMGifWrapper.swift */,
 				FA32734C2035E60000D0E255 /* GPHMediaWrapper.swift */,
 				1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */,
@@ -364,7 +370,9 @@
 				FA32734D2035E60000D0E255 /* GPHMediaWrapper.swift in Sources */,
 				FA7784192028929E00881D34 /* AMGifWrapper.swift in Sources */,
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
+				FA0A1CA92036DB8D00E8D193 /* AMGifQuality.swift in Sources */,
 				12992CCB200D43BB0054B9E5 /* AMGifCache.swift in Sources */,
+				FA0A1CAB2036E5AE00E8D193 /* AMGif.swift in Sources */,
 				12A37E9B20056AEE0052308E /* AMGifPicker.swift in Sources */,
 				FA9630D32035A88B002C593F /* FileManager+Extension.swift in Sources */,
 				12A37E8320056AC40052308E /* AppDelegate.swift in Sources */,
