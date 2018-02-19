@@ -158,3 +158,4 @@ extension AMGifViewModel: Hashable {
         return gifItem.key.hashValue
     }
 }
+

@@ -85,13 +85,16 @@ extension AMGifPickerModel {
             //Clean search cache and cancel all loading operation
             searchGifs.forEach { $0.cancelFetching() }
             searchGifs.removeAll()
-            
+            searchString = nil
             //If trending gifs already exist
             if trendingGifs.count < Configuration.limit {
                 provider.loadGiphy(limit: Configuration.limit, completion: {[weak self] (newGifs) in
                     guard let gifs = newGifs, let strongSelf = self else { return }
                     strongSelf.appendTrending(gifs)
+                    strongSelf.delegate?.modelDidUpdatedData(strongSelf)
                 })
+            } else {
+                self.delegate?.modelDidUpdatedData(self)
             }
         }
     }
@@ -105,20 +108,35 @@ extension AMGifPickerModel {
                     let model = AMGif(media, preferred: strongSelf.configuration.dataQuality)
                     return AMGifViewModel(model)
                 }
+                let startIndex = strongSelf.searchGifs.count
+                let isInsert = strongSelf.searchGifs.count > 0
                 strongSelf.searchGifs.append(contentsOf: gifsViewModel)
-                strongSelf.delegate?.modelDidUpdatedData(strongSelf)
+                if isInsert {
+                    var indexes: [IndexPath] = []
+                    for (index, _) in gifsViewModel.enumerated() {
+                        indexes.append(IndexPath(row: startIndex + index, section: 0))
+                    }
+                    strongSelf.delegate?.model(strongSelf, didInsert: indexes)
+                } else {
+                    strongSelf.delegate?.modelDidUpdatedData(strongSelf)
+                }
             })
-        } else if trendingGifs.count < configuration.maxLoadCount {
+        } else if trendingGifs.count < configuration.maxLoadCount && searchString.emptyIfNil == 0 {
             let limit = configuration.maxLoadCount - trendingGifs.count > Configuration.limit ? Configuration.limit : configuration.maxLoadCount - trendingGifs.count
             provider.loadGiphy(nil, offset: trendingGifs.count, limit: limit, completion: {[weak self] (newGifs) in
                 guard let gifs = newGifs, let strongSelf = self else { return }
                 let startIndex = strongSelf.trendingGifs.count
+                let isInsert = strongSelf.trendingGifs.count > 0
                 strongSelf.appendTrending(gifs)
-                var indexes: [IndexPath] = []
-                for (index, _) in gifs.enumerated() {
-                    indexes.append(IndexPath(row: startIndex + index, section: 0))
+                if isInsert {
+                    var indexes: [IndexPath] = []
+                    for (index, _) in gifs.enumerated() {
+                        indexes.append(IndexPath(row: startIndex + index, section: 0))
+                    }
+                    strongSelf.delegate?.model(strongSelf, didInsert: indexes)
+                } else {
+                    strongSelf.delegate?.modelDidUpdatedData(strongSelf)
                 }
-                strongSelf.delegate?.model(strongSelf, didInsert: indexes)
             })
         }
     }
@@ -128,7 +146,7 @@ extension AMGifPickerModel {
 extension AMGifPickerModel {
     
     func numberOfItems() -> Int {
-        if searchString != nil {
+        if let search = searchString, search.count > 0 {
             return searchGifs.count
         }
         return trendingGifs.count
@@ -141,3 +159,4 @@ extension AMGifPickerModel {
         return index < trendingGifs.count ? trendingGifs[index] : nil
     }
 }
+

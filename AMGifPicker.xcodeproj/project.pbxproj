@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		06B053EA4691C3BBD3A4F628 /* Pods_AMGifPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 617B9B6D98FF8FB7084A3E61 /* Pods_AMGifPicker.framework */; };
 		1221ABA120114FCD00B72AC9 /* AMGifViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */; };
+		122AE9B9203B03430083AE86 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122AE9B8203B03430083AE86 /* String+Extension.swift */; };
 		12992CCB200D43BB0054B9E5 /* AMGifCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12992CCA200D43BB0054B9E5 /* AMGifCache.swift */; };
 		12996632201A875E00DB7AFB /* AMGifPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12996631201A875E00DB7AFB /* AMGifPickerModel.swift */; };
 		12A37E8320056AC40052308E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A37E8220056AC40052308E /* AppDelegate.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		017B845F438077850F824A30 /* Pods-GiphyComponent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiphyComponent.release.xcconfig"; path = "Pods/Target Support Files/Pods-GiphyComponent/Pods-GiphyComponent.release.xcconfig"; sourceTree = "<group>"; };
 		1221ABA020114FCD00B72AC9 /* AMGifViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifViewModel.swift; sourceTree = "<group>"; };
+		122AE9B8203B03430083AE86 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		12992CCA200D43BB0054B9E5 /* AMGifCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifCache.swift; sourceTree = "<group>"; };
 		12996631201A875E00DB7AFB /* AMGifPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMGifPickerModel.swift; sourceTree = "<group>"; };
 		12A37E7F20056AC30052308E /* AMGifPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AMGifPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -217,6 +219,7 @@
 		FADDD019201B30FA002A9EA8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				122AE9B8203B03430083AE86 /* String+Extension.swift */,
 				FADDD017201B30F5002A9EA8 /* NSSet+Extension.swift */,
 				FA9630D22035A88B002C593F /* FileManager+Extension.swift */,
 			);
@@ -368,6 +371,7 @@
 				12E7806620080D360068C8F7 /* AMGifHorizontalLayout.swift in Sources */,
 				12A37E9A20056AEE0052308E /* AMGifDataService.swift in Sources */,
 				FA32734D2035E60000D0E255 /* GPHMediaWrapper.swift in Sources */,
+				122AE9B9203B03430083AE86 /* String+Extension.swift in Sources */,
 				FA7784192028929E00881D34 /* AMGifWrapper.swift in Sources */,
 				12A37E8520056AC40052308E /* ViewController.swift in Sources */,
 				FA0A1CA92036DB8D00E8D193 /* AMGifQuality.swift in Sources */,

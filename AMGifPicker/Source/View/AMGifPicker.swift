@@ -87,6 +87,7 @@ extension AMGifPicker: AMGifPickerModelDelegate {
     func modelDidUpdatedData(_ model: AMGifPickerModel) {
         DispatchQueue.main.async {
             self.collectionView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
+            self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.reloadData()
         }
     }
@@ -115,7 +116,7 @@ extension AMGifPicker: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item - model.numberOfItems() < 10 {
+        if model.numberOfItems() - indexPath.item < 10 {
             model.loadNext()
         }
     }
@@ -175,3 +176,4 @@ extension AMGifPicker: AMGifVerticalLayoutDelegate {
         return itemSize.height*ratio
     }
 }
+

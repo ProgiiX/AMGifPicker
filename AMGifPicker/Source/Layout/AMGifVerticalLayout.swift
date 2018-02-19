@@ -25,10 +25,18 @@ class AMGifVerticalLayout: AMGifBaseLayout {
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        if let oldWidth = collectionView?.bounds.width {
+            return oldWidth != newBounds.width
+        }
+        return false
+    }
+    
     override func prepare() {
         guard let collectionView = collectionView, let delegate = delegate as? AMGifVerticalLayoutDelegate else {
             return
         }
+        contentHeight = 0
         cache.removeAll()
         
         let numberOfColumns = delegate.numberOfColumns(collectionView)

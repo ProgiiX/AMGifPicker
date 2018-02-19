@@ -18,10 +18,6 @@ class AMGifBaseLayout: UICollectionViewLayout {
     
     var cache: [UICollectionViewLayoutAttributes] = []
     
-    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        return true
-    }
-    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
         // Loop through the cache and look for items in the rect

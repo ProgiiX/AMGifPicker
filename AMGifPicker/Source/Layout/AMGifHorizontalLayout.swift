@@ -24,11 +24,18 @@ class AMGifHorizontalLayout: AMGifBaseLayout {
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        if let oldHeight = collectionView?.bounds.height {
+            return oldHeight != newBounds.height
+        }
+        return false
+    }
     
     override func prepare() {
         guard let collectionView = collectionView, let delegate = delegate as? AMGifHorizontalLayoutDelegate else {
             return
         }
+        contentWidth = 0
         cache.removeAll()
         
         let numberOfRows = delegate.numberOfRows(collectionView)
@@ -58,3 +65,4 @@ class AMGifHorizontalLayout: AMGifBaseLayout {
         }
     }
 }
+
